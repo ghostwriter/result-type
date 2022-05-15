@@ -1,6 +1,6 @@
 {
-    "name": "ghostwriter/result",
-    "description": "Provides an implementation of Rust's Result type",
+    "name": "ghostwriter/result-type",
+    "description": "Result type implementation for PHP",
     "license": "MIT",
     "type": "library",
     "keywords": [
@@ -15,13 +15,13 @@
             "role": "Developer"
         }
     ],
-    "homepage": "https://github.com/ghostwriter/result",
+    "homepage": "https://github.com/ghostwriter/result-type",
     "support": {
-        "issues": "https://github.com/ghostwriter/result/issues",
-        "forum": "https://github.com/ghostwriter/result/discussions",
-        "source": "https://github.com/ghostwriter/result",
-        "docs": "https://github.com/ghostwriter/result",
-        "rss": "https://github.com/ghostwriter/result/releases.atom"
+        "issues": "https://github.com/ghostwriter/result-type/issues",
+        "forum": "https://github.com/ghostwriter/result-type/discussions",
+        "source": "https://github.com/ghostwriter/result-type",
+        "docs": "https://github.com/ghostwriter/result-type",
+        "rss": "https://github.com/ghostwriter/result-type/releases.atom"
     },
     "funding": [
         {
@@ -39,7 +39,7 @@
         "rector/rector": "^0.12.23",
         "roave/infection-static-analysis-plugin": "^1.18.0",
         "roave/security-advisories": "dev-latest",
-        "symplify/easy-coding-standard": "^10.2.3",
+        "symplify/easy-coding-standard": "^10.2.5",
         "vimeo/psalm": "^4.23.0"
     },
     "replace": {},
@@ -47,16 +47,14 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Ghostwriter\\Result\\": "src/"
+            "Ghostwriter\\ResultType\\": "src/"
         },
         "files": [
-            "src/constants.php",
-            "src/functions.php"
         ]
     },
     "autoload-dev": {
         "psr-4": {
-            "Ghostwriter\\Result\\Tests\\": "tests/"
+            "Ghostwriter\\ResultType\\Tests\\": "tests/"
         }
     },
     "config": {
