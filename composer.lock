@@ -4,8 +4,76 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "122e6298490da1f67a76ef68864c9141",
-    "packages": [],
+    "content-hash": "9789d76076dd37e7e4bc4732b516dd91",
+    "packages": [
+        {
+            "name": "ghostwriter/option",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ghostwriter/option.git",
+                "reference": "0c87394588e38defe56c83b089b23f0d1d283a1b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ghostwriter/option/zipball/0c87394588e38defe56c83b089b23f0d1d283a1b",
+                "reference": "0c87394588e38defe56c83b089b23f0d1d283a1b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0, <8.2"
+            },
+            "require-dev": {
+                "phpbench/phpbench": "^1.2.5",
+                "phpunit/phpunit": "^9.5.20",
+                "psalm/plugin-phpunit": "^0.16.1",
+                "rector/rector": "^0.12.23",
+                "roave/infection-static-analysis-plugin": "^1.18.0",
+                "roave/security-advisories": "dev-latest",
+                "symplify/easy-coding-standard": "^10.2.6",
+                "vimeo/psalm": "^4.23.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [],
+                "psr-4": {
+                    "Ghostwriter\\Option\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nathanael Esayeas",
+                    "email": "nathanael.esayeas@protonmail.com",
+                    "homepage": "https://github.com/ghostwriter",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Provides an Option type implementation for PHP",
+            "homepage": "https://github.com/ghostwriter/option",
+            "keywords": [
+                "ghostwriter",
+                "option"
+            ],
+            "support": {
+                "docs": "https://github.com/ghostwriter/option",
+                "forum": "https://github.com/ghostwriter/option/discussions",
+                "issues": "https://github.com/ghostwriter/option/issues",
+                "rss": "https://github.com/ghostwriter/option/releases.atom",
+                "source": "https://github.com/ghostwriter/option"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sponsors/ghostwriter",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-05-19T03:48:17+00:00"
+        }
+    ],
     "packages-dev": [
         {
             "name": "amphp/amp",
@@ -2816,12 +2884,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "2ed308386e65cafaadd54723f5b57775374c2ae8"
+                "reference": "c491d086242983f784b8af91cbb9de43d3374971"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/2ed308386e65cafaadd54723f5b57775374c2ae8",
-                "reference": "2ed308386e65cafaadd54723f5b57775374c2ae8",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/c491d086242983f784b8af91cbb9de43d3374971",
+                "reference": "c491d086242983f784b8af91cbb9de43d3374971",
                 "shasum": ""
             },
             "conflict": {
@@ -2854,6 +2922,7 @@
                 "bolt/core": "<=4.2",
                 "bottelet/flarepoint": "<2.2.1",
                 "brightlocal/phpwhois": "<=4.2.5",
+                "brotkrueml/codehighlight": "<2.7",
                 "buddypress/buddypress": "<7.2.1",
                 "bugsnag/bugsnag-laravel": ">=2,<2.0.2",
                 "bytefury/crater": "<6.0.2",
@@ -3298,7 +3367,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-05-11T11:06:18+00:00"
+            "time": "2022-05-16T08:10:11+00:00"
         },
         {
             "name": "sanmai/later",
@@ -5447,16 +5516,16 @@
         },
         {
             "name": "symplify/easy-coding-standard",
-            "version": "10.2.5",
+            "version": "10.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/easy-coding-standard.git",
-                "reference": "adf8160b62834ef7de518254a05fd6d57b7c1c29"
+                "reference": "8875d8cd438756c9719fcdcc3b7d0c1d06515dd5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/easy-coding-standard/zipball/adf8160b62834ef7de518254a05fd6d57b7c1c29",
-                "reference": "adf8160b62834ef7de518254a05fd6d57b7c1c29",
+                "url": "https://api.github.com/repos/symplify/easy-coding-standard/zipball/8875d8cd438756c9719fcdcc3b7d0c1d06515dd5",
+                "reference": "8875d8cd438756c9719fcdcc3b7d0c1d06515dd5",
                 "shasum": ""
             },
             "require": {
@@ -5486,7 +5555,7 @@
             ],
             "description": "Prefixed scoped version of ECS package",
             "support": {
-                "source": "https://github.com/symplify/easy-coding-standard/tree/10.2.5"
+                "source": "https://github.com/symplify/easy-coding-standard/tree/10.2.6"
             },
             "funding": [
                 {
@@ -5498,7 +5567,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-05-14T22:55:58+00:00"
+            "time": "2022-05-17T07:11:50+00:00"
         },
         {
             "name": "thecodingmachine/safe",
@@ -5914,7 +5983,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.0,<8.2"
+        "php": ">=8.0, <8.2"
     },
     "platform-dev": [],
     "plugin-api-version": "2.3.0"
