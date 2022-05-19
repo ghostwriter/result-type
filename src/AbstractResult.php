@@ -2,80 +2,169 @@
 
 declare(strict_types=1);
 
-namespace Ghostwriter\ResultType;
+namespace Ghostwriter\Result;
 
-use Ghostwriter\ResultType\Contract\ResultInterface;
+use Ghostwriter\Option\Contract\OptionInterface;
+use Ghostwriter\Option\None;
+use Ghostwriter\Option\Some;
+use Ghostwriter\Result\Contract\ErrorInterface;
+use Ghostwriter\Result\Contract\ResultInterface;
+use Ghostwriter\Result\Contract\SuccessInterface;
+use Ghostwriter\Result\Exception\ResultException;
+use Throwable;
 
-abstract class AbstractResult implements ResultInterface
-{
-//    public static ResultInterface $result;
-//
-//    /**
-//     * Get the error option value.
-//     *
-//     * @return \PhpOption\Option<E>
-//     */
-//    abstract public function error(): Option;
-//
-//    /**
-//     * Flat map over the success value.
-//     *
-//     * @template S
-//     * @template F
-//     *
-//     * @param callable(T):\GrahamCampbell\ResultType\ResultType<S,F> $f
-//     *
-//     * @return \GrahamCampbell\ResultType\ResultType<S,F>
-//     */
-//    abstract public function flatMap(callable $f): ResultType;
-//
-//    /**
-//     * True, if this is Failure, false otherwise.
-//     */
-//    public function isFailure(): bool
-//    {
-//        return $this instanceof FailureInterface;
-//    }
-//
-//    /**
-//     * True, if this is Success, false otherwise.
-//     */
-//    public function isSuccess(): bool
-//    {
-//        return $this instanceof OptionInterface;
-//    }
-//
-//    /**
-//     * Map over the success value.
-//     *
-//     * @template S
-//     *
-//     * @param callable(T):S $f
-//     *
-//     * @return \GrahamCampbell\ResultType\ResultType<S,E>
-//     */
-//    abstract public function map(callable $f): ResultType;
-//
-//    /**
-//     * Map over the error value.
-//     *
-//     * @template F
-//     *
-//     * @param callable(E):F $f
-//     *
-//     * @return \GrahamCampbell\ResultType\ResultType<T,F>
-//     */
-//    abstract public function mapError(callable $f): ResultType;
-//
-//    // public static function create(string $args): self
-//    // {
-//    //     return new static();
-//    // }
-//
-//    /**
-//     * Get the success option value.
-//     *
-//     * @return \PhpOption\Option<T>
-//     */
-//    abstract public function success(): Option;
-}
+ /**
+  * @template TSuccess
+  * @implements ResultInterface<TSuccess|Throwable>
+  */
+ abstract class AbstractResult implements ResultInterface
+ {
+     /**
+      * @var Throwable|TSuccess
+      */
+     protected mixed $value;
+
+     public function and(ResultInterface $result): ResultInterface
+     {
+         if ($this instanceof ErrorInterface) {
+             return $this;
+         }
+
+         return $result;
+     }
+
+     public function andThen(callable $function): ResultInterface
+     {
+         if ($this instanceof ErrorInterface) {
+             return $this;
+         }
+
+         return $function($this->value);
+     }
+
+     public function error(): OptionInterface
+     {
+         if ($this instanceof SuccessInterface) {
+             return None::create();
+         }
+
+         return Some::create($this->value);
+     }
+
+     public function expect(Throwable $throwable): mixed
+     {
+         if ($this instanceof SuccessInterface) {
+             return $this->value;
+         }
+
+         throw $throwable;
+     }
+
+     public function expectError(Throwable $throwable): Throwable
+     {
+         if ($this instanceof ErrorInterface) {
+             /** @var Throwable */
+             return $this->value;
+         }
+
+         throw $throwable;
+     }
+
+     public function isError(): bool
+     {
+         return $this instanceof ErrorInterface;
+     }
+
+     public function isSuccess(): bool
+     {
+         return $this instanceof SuccessInterface;
+     }
+
+     public function map(callable $function): ResultInterface
+     {
+         if ($this instanceof ErrorInterface) {
+             return $this;
+         }
+
+         return new Success($function($this->value));
+     }
+
+     public function mapError(callable $function): ResultInterface
+     {
+         if ($this instanceof SuccessInterface) {
+             return $this;
+         }
+
+         /** @var Throwable $value */
+         $value = $this->value;
+
+         return new Error($function($value));
+     }
+
+     public function or(ResultInterface $result): ResultInterface
+     {
+         if ($this instanceof SuccessInterface) {
+             return new Success($this->value);
+         }
+
+         return $result;
+     }
+
+     public function orElse(callable $function): ResultInterface
+     {
+         $value = $this->value;
+         if ($this instanceof SuccessInterface) {
+             return new Success($value);
+         }
+
+         /** @var Throwable $value */
+         return $function($value);
+     }
+
+     public function success(): OptionInterface
+     {
+         if ($this instanceof SuccessInterface) {
+             return Some::create($this->value);
+         }
+
+         return None::create();
+     }
+
+     public function unwrap(): mixed
+     {
+         if ($this instanceof SuccessInterface) {
+             return $this->value;
+         }
+
+         throw ResultException::invalidMethodCall('unwrap', ErrorInterface::class);
+     }
+
+     public function unwrapError(): mixed
+     {
+         if ($this instanceof ErrorInterface) {
+             return $this->value;
+         }
+
+         throw ResultException::invalidMethodCall('unwrapError', SuccessInterface::class);
+     }
+
+     public function unwrapOr(mixed $fallback): mixed
+     {
+         if ($this instanceof SuccessInterface) {
+             return $this->value;
+         }
+
+         return $fallback;
+     }
+
+     public function unwrapOrElse(callable $function): mixed
+     {
+         $value = $this->value;
+         if ($this instanceof SuccessInterface) {
+             return $value;
+         }
+
+         /** @var Throwable $value */
+         return $function($value);
+     }
+ }
