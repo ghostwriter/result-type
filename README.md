@@ -1,25 +1,47 @@
-# ResultType
+# Result
 
-[![Continuous Integration](https://github.com/ghostwriter/result-type/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/ghostwriter/result-type/actions/workflows/continuous-integration.yml)
-[![Supported PHP Version](https://badgen.net/packagist/php/ghostwriter/result-type?color=8892bf)](https://www.php.net/supported-versions)
-[![Type Coverage](https://shepherd.dev/github/ghostwriter/result-type/coverage.svg)](https://shepherd.dev/github/ghostwriter/result-type)
-[![Latest Version on Packagist](https://badgen.net/packagist/v/ghostwriter/result-type)](https://packagist.org/packages/ghostwriter/result-type)
-[![Downloads](https://badgen.net/packagist/dt/ghostwriter/result-type?color=blue)](https://packagist.org/packages/ghostwriter/result-type)
+[![Continuous Integration](https://github.com/ghostwriter/result/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/ghostwriter/result/actions/workflows/continuous-integration.yml)
+[![Supported PHP Version](https://badgen.net/packagist/php/ghostwriter/result?color=8892bf)](https://www.php.net/supported-versions)
+[![Type Coverage](https://shepherd.dev/github/ghostwriter/result/coverage.svg)](https://shepherd.dev/github/ghostwriter/result)
+[![Latest Version on Packagist](https://badgen.net/packagist/v/ghostwriter/result)](https://packagist.org/packages/ghostwriter/result)
+[![Downloads](https://badgen.net/packagist/dt/ghostwriter/result?color=blue)](https://packagist.org/packages/ghostwriter/result)
 
-Provides an implementation of Rust's Result type
+Provides a **Result type** implementation for PHP
 
 ## Installation
 
 You can install the package via composer:
 
 ``` bash
-composer require ghostwriter/result-type
+composer require ghostwriter/result
 ```
 
 ## Usage
 
 ```php
-// result-type-type
+use Ghostwriter\Result\{ResultInterface, Success, Error};
+
+// basic setting and getting of values
+$greeting = new Success('Hello world!');
+$name = new Error(new InvalidArgumentException());
+
+echo $greeting->unwrap(); // echos 'Hello world!'
+
+echo $name->unwrap(); // throws a ResultException
+echo $name->unwrapOr('Anonymous'); // echos 'Anonymous'
+echo $name->unwrapError(); // returns InvalidArgumentException
+
+// function that returns a Result<number, string>
+function divide(int $x, int $y): ResultInterface
+{
+    if ($y === 0) {
+        return new Error(new DivisionByZeroError);
+    }
+    return new Success($x / $y);
+}
+
+divide(1, 0); // Error(DivisionByZeroError)
+divide(1, 1); // Success(1)
 ```
 
 ## Testing
@@ -44,7 +66,7 @@ Maintaining open source software is a thankless, time-consuming job.
 
 Sponsorships are one of the best ways to contribute to the long-term sustainability of an open-source licensed project.
 
-Please consider giving back, to fund the continued development of `ghostwriter/result-type-type`, by sponsoring me here on GitHub.
+Please consider giving back, to fund the continued development of `ghostwriter/result-type`, by sponsoring me here on GitHub.
 
 [[Become a GitHub Sponsor](https://github.com/sponsors/ghostwriter)]
 
@@ -55,7 +77,7 @@ Please consider helping your company become a GitHub Sponsor, to support the ope
 ## Credits
 
 - [Nathanael Esayeas](https://github.com/ghostwriter)
-- [All Contributors](https://github.com/ghostwriter/result-type/contributors)
+- [All Contributors](https://github.com/ghostwriter/result/contributors)
 
 ## License
 
