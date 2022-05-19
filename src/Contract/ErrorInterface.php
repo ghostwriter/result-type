@@ -2,17 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ghostwriter\ResultType\Contract;
+namespace Ghostwriter\Result\Contract;
 
 use Throwable;
 
 /**
- * @template TSuccess
- * @template TFailure
+ * @implements ResultInterface<Throwable>
  */
 interface ErrorInterface extends ResultInterface
 {
     public function __construct(Throwable $throwable);
-
-    public function get(): mixed;
 }
