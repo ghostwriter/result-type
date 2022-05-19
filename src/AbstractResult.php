@@ -104,7 +104,7 @@ use Throwable;
      public function or(ResultInterface $result): ResultInterface
      {
          if ($this instanceof SuccessInterface) {
-             return new Success($this->value);
+             return $this;
          }
 
          return $result;
@@ -112,12 +112,13 @@ use Throwable;
 
      public function orElse(callable $function): ResultInterface
      {
-         $value = $this->value;
          if ($this instanceof SuccessInterface) {
-             return new Success($value);
+             return $this;
          }
 
          /** @var Throwable $value */
+         $value = $this->value;
+
          return $function($value);
      }
 
