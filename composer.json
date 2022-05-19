@@ -1,5 +1,5 @@
 {
-    "name": "ghostwriter/result-type",
+    "name": "ghostwriter/result",
     "description": "Result type implementation for PHP",
     "license": "MIT",
     "type": "library",
@@ -15,13 +15,13 @@
             "role": "Developer"
         }
     ],
-    "homepage": "https://github.com/ghostwriter/result-type",
+    "homepage": "https://github.com/ghostwriter/result",
     "support": {
-        "issues": "https://github.com/ghostwriter/result-type/issues",
-        "forum": "https://github.com/ghostwriter/result-type/discussions",
-        "source": "https://github.com/ghostwriter/result-type",
-        "docs": "https://github.com/ghostwriter/result-type",
-        "rss": "https://github.com/ghostwriter/result-type/releases.atom"
+        "issues": "https://github.com/ghostwriter/result/issues",
+        "forum": "https://github.com/ghostwriter/result/discussions",
+        "source": "https://github.com/ghostwriter/result",
+        "docs": "https://github.com/ghostwriter/result",
+        "rss": "https://github.com/ghostwriter/result/releases.atom"
     },
     "funding": [
         {
@@ -30,7 +30,8 @@
         }
     ],
     "require": {
-        "php": ">=8.0,<8.2"
+        "php": ">=8.0,<8.2",
+        "ghostwriter/option": "^0.1.0"
     },
     "require-dev": {
         "phpbench/phpbench": "^1.2.5",
@@ -47,14 +48,14 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Ghostwriter\\ResultType\\": "src/"
+            "Ghostwriter\\Result\\": "src/"
         },
         "files": [
         ]
     },
     "autoload-dev": {
         "psr-4": {
-            "Ghostwriter\\ResultType\\Tests\\": "tests/"
+            "Ghostwriter\\Result\\Tests\\": "tests/"
         }
     },
     "config": {
