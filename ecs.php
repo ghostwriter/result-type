@@ -71,10 +71,7 @@ use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 
 return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->parallel();
-
-    $ecsConfig->paths(
-        [__DIR__ . '/rector.php', __DIR__ . '/ecs.php', __DIR__ . '/bin', __DIR__ . '/src', __DIR__ . '/tests']
-    );
+    $ecsConfig->paths([__DIR__ . '/rector.php', __DIR__ . '/ecs.php', __DIR__ . '/src', __DIR__ . '/tests']);
 
     $ecsConfig->skip([
         '*/tests/Fixture/*',
@@ -85,24 +82,20 @@ return static function (ECSConfig $ecsConfig): void {
         PhpdocLineSpanFixer::class,
         PhpdocTrimFixer::class,
     ]);
-
     $ecsConfig->import(SetList::ARRAY);
     $ecsConfig->import(SetList::CLEAN_CODE);
     $ecsConfig->import(SetList::COMMON);
     $ecsConfig->import(SetList::CONTROL_STRUCTURES);
     $ecsConfig->import(SetList::NAMESPACES);
-    $ecsConfig->import(SetList::PHP_CS_FIXER);
-    $ecsConfig->import(SetList::PHPUNIT);
     $ecsConfig->import(SetList::PSR_12);
-    $ecsConfig->import(SetList::PHP_CS_FIXER_RISKY);
+    $ecsConfig->import(SetList::DOCBLOCK);
+    $ecsConfig->import(SetList::PHPUNIT);
     $ecsConfig->import(SetList::SPACES);
     $ecsConfig->import(SetList::STRICT);
     $ecsConfig->import(SetList::SYMPLIFY);
-//    $ecsConfig->import(SetList::SYMFONY);
-//    $ecsConfig->import(SetList::SYMFONY_RISKY);
 
     $parameters = $ecsConfig->parameters();
-    $parameters->set(Option::CACHE_DIRECTORY, __DIR__ . '/.cache/.ecs');
+    $parameters->set(Option::CACHE_DIRECTORY, __DIR__ . '/.cache/ecs');
 
     $ecsConfig->ruleWithConfiguration(GlobalNamespaceImportFixer::class, [
         'import_classes' => true,
