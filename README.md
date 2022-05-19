@@ -66,6 +66,7 @@ Maintaining open source software is a thankless, time-consuming job.
 
 Sponsorships are one of the best ways to contribute to the long-term sustainability of an open-source licensed project.
 
+
 Please consider giving back, to fund the continued development of `ghostwriter/result-type`, by sponsoring me here on GitHub.
 
 [[Become a GitHub Sponsor](https://github.com/sponsors/ghostwriter)]

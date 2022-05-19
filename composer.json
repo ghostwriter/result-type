@@ -1,6 +1,6 @@
 {
     "name": "ghostwriter/result",
-    "description": "Result type implementation for PHP",
+    "description": "Provides a Result type implementation for PHP",
     "license": "MIT",
     "type": "library",
     "keywords": [
@@ -30,7 +30,7 @@
         }
     ],
     "require": {
-        "php": ">=8.0,<8.2",
+        "php": ">=8.0, <8.2",
         "ghostwriter/option": "^0.1.0"
     },
     "require-dev": {
@@ -50,13 +50,13 @@
         "psr-4": {
             "Ghostwriter\\Result\\": "src/"
         },
-        "files": [
-        ]
+        "files": []
     },
     "autoload-dev": {
         "psr-4": {
             "Ghostwriter\\Result\\Tests\\": "tests/"
-        }
+        },
+        "files": []
     },
     "config": {
         "allow-plugins": {
