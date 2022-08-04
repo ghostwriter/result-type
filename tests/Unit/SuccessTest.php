@@ -22,33 +22,46 @@ use Throwable;
  */
 final class SuccessTest extends TestCase
 {
-    private Success $success;
+    private SuccessInterface $success;
 
     protected function setUp(): void
     {
-        $this->success =  new Success(42);
+        $this->success =  Success::create(42);
     }
 
     /**
      * @covers \Ghostwriter\Result\AbstractResult::and
+     * @covers \Ghostwriter\Result\AbstractResult::error
+     * @covers \Ghostwriter\Result\AbstractResult::isSuccess
+     * @covers \Ghostwriter\Result\AbstractResult::success
+     * @covers \Ghostwriter\Result\AbstractResult::unwrap
      * @covers \Ghostwriter\Result\Success::__construct
+     * @covers \Ghostwriter\Result\Success::create
      */
     public function testAnd(): void
     {
-        $success = new Success('foobar');
+        $success = Success::create(true);
         self::assertSame($success, $this->success->and($success));
+        self::assertTrue($success->isSuccess());
+        self::assertTrue($success->success()->isSome());
+        self::assertTrue($success->error()->isNone());
+        self::assertTrue($success->unwrap());
     }
 
     /**
      * @covers \Ghostwriter\Result\AbstractResult::andThen
      * @covers \Ghostwriter\Result\AbstractResult::isSuccess
+     * @covers \Ghostwriter\Result\AbstractResult::call
+     * @covers \Ghostwriter\Result\AbstractResult::of
      * @covers \Ghostwriter\Result\AbstractResult::unwrap
      * @covers \Ghostwriter\Result\Success::__construct
+     * @covers \Ghostwriter\Result\Success::create
      */
     public function testAndThen(): void
     {
-        $success = new Success('foo');
-        $result = $success->andThen(static fn (string $word): Success => new Success($word . 'bar'));
+        $result = Success::create('foo')
+            ->andThen(static fn ($word): string => is_string($word) ? 'foobar' : 'baz');
+
         self::assertTrue($result->isSuccess());
         self::assertSame('foobar', $result->unwrap());
     }
@@ -56,25 +69,34 @@ final class SuccessTest extends TestCase
     /**
      * @covers \Ghostwriter\Result\AbstractResult::isSuccess
      * @covers \Ghostwriter\Result\Success::__construct
+     * @covers \Ghostwriter\Result\Success::create
      */
     public function testConstruct(): void
     {
-        $success = new Success('foo');
+        $success =  Success::create('foo');
         self::assertTrue($success->isSuccess());
     }
 
     /**
      * @covers \Ghostwriter\Result\AbstractResult::error
+     * @covers \Ghostwriter\Result\AbstractResult::isSuccess
+     * @covers \Ghostwriter\Result\AbstractResult::unwrap
      * @covers \Ghostwriter\Result\Success::__construct
+     * @covers \Ghostwriter\Result\Success::create
      */
     public function testError(): void
     {
+        self::assertSame(42, $this->success->unwrap());
+
+        self::assertTrue($this->success->isSuccess());
+
         self::assertInstanceOf(None::class, $this->success->error());
     }
 
     /**
      * @covers \Ghostwriter\Result\AbstractResult::expect
      * @covers \Ghostwriter\Result\Success::__construct
+     * @covers \Ghostwriter\Result\Success::create
      *
      * @throws Throwable
      */
@@ -88,6 +110,7 @@ final class SuccessTest extends TestCase
      * @covers \Ghostwriter\Result\AbstractResult::expectError
      * @covers \Ghostwriter\Result\AbstractResult::isError
      * @covers \Ghostwriter\Result\Success::__construct
+     * @covers \Ghostwriter\Result\Success::create
      *
      * @throws Throwable
      */
@@ -101,8 +124,9 @@ final class SuccessTest extends TestCase
     /**
      * @covers \Ghostwriter\Result\AbstractResult::isError
      * @covers \Ghostwriter\Result\Success::__construct
+     * @covers \Ghostwriter\Result\Success::create
      */
-    public function testIsError(): void
+    public function testisError(): void
     {
         self::assertFalse($this->success->isError());
     }
@@ -110,6 +134,7 @@ final class SuccessTest extends TestCase
     /**
      * @covers \Ghostwriter\Result\AbstractResult::isSuccess
      * @covers \Ghostwriter\Result\Success::__construct
+     * @covers \Ghostwriter\Result\Success::create
      */
     public function testIsSuccess(): void
     {
@@ -119,8 +144,11 @@ final class SuccessTest extends TestCase
     /**
      * @covers \Ghostwriter\Result\AbstractResult::isSuccess
      * @covers \Ghostwriter\Result\AbstractResult::map
+     * @covers \Ghostwriter\Result\AbstractResult::call
+     * @covers \Ghostwriter\Result\AbstractResult::of
      * @covers \Ghostwriter\Result\AbstractResult::unwrap
      * @covers \Ghostwriter\Result\Success::__construct
+     * @covers \Ghostwriter\Result\Success::create
      */
     public function testMap(): void
     {
@@ -128,7 +156,7 @@ final class SuccessTest extends TestCase
         self::assertTrue($result->isSuccess());
         self::assertNotSame($this->success, $result);
 
-        $mapped = $this->success->map(static fn (int $x): int => $x * 10);
+        $mapped = $this->success->map(static fn (mixed $x): int => (int) $x * 10);
         self::assertTrue($mapped->isSuccess());
         self::assertNotSame($this->success, $mapped);
         self::assertSame(420, $mapped->unwrap());
@@ -138,6 +166,7 @@ final class SuccessTest extends TestCase
      * @covers \Ghostwriter\Result\AbstractResult::isSuccess
      * @covers \Ghostwriter\Result\AbstractResult::mapError
      * @covers \Ghostwriter\Result\Success::__construct
+     * @covers \Ghostwriter\Result\Success::create
      */
     public function testMapError(): void
     {
@@ -151,10 +180,11 @@ final class SuccessTest extends TestCase
      * @covers \Ghostwriter\Result\AbstractResult::or
      * @covers \Ghostwriter\Result\AbstractResult::unwrap
      * @covers \Ghostwriter\Result\Success::__construct
+     * @covers \Ghostwriter\Result\Success::create
      */
     public function testOr(): void
     {
-        $success = new Success('foobar');
+        $success = Success::create('foobar');
         $result = $this->success->or($success);
 
         self::assertTrue($result->isSuccess());
@@ -166,11 +196,13 @@ final class SuccessTest extends TestCase
      * @covers \Ghostwriter\Result\AbstractResult::orElse
      * @covers \Ghostwriter\Result\AbstractResult::unwrap
      * @covers \Ghostwriter\Result\Success::__construct
+     * @covers \Ghostwriter\Result\Success::create
      */
     public function testOrElse(): void
     {
-        $success = new Success('foobar');
-        $result = $this->success->orElse(static fn (): Success => $success);
+        $result = $this->success->orElse(static function (): void {
+            self::fail('Should not be called!');
+        });
 
         self::assertTrue($result->isSuccess());
         self::assertSame(42, $result->unwrap());
@@ -179,6 +211,7 @@ final class SuccessTest extends TestCase
     /**
      * @covers \Ghostwriter\Result\AbstractResult::success
      * @covers \Ghostwriter\Result\Success::__construct
+     * @covers \Ghostwriter\Result\Success::create
      */
     public function testSuccess(): void
     {
@@ -188,6 +221,7 @@ final class SuccessTest extends TestCase
     /**
      * @covers \Ghostwriter\Result\AbstractResult::unwrap
      * @covers \Ghostwriter\Result\Success::__construct
+     * @covers \Ghostwriter\Result\Success::create
      */
     public function testUnwrap(): void
     {
@@ -199,6 +233,7 @@ final class SuccessTest extends TestCase
      * @covers \Ghostwriter\Result\AbstractResult::unwrapError
      * @covers \Ghostwriter\Result\Exception\ResultException::invalidMethodCall
      * @covers \Ghostwriter\Result\Success::__construct
+     * @covers \Ghostwriter\Result\Success::create
      */
     public function testUnwrapError(): void
     {
@@ -213,6 +248,7 @@ final class SuccessTest extends TestCase
     /**
      * @covers \Ghostwriter\Result\AbstractResult::unwrapOr
      * @covers \Ghostwriter\Result\Success::__construct
+     * @covers \Ghostwriter\Result\Success::create
      */
     public function testUnwrapOr(): void
     {
@@ -222,6 +258,7 @@ final class SuccessTest extends TestCase
     /**
      * @covers \Ghostwriter\Result\AbstractResult::unwrapOrElse
      * @covers \Ghostwriter\Result\Success::__construct
+     * @covers \Ghostwriter\Result\Success::create
      */
     public function testUnwrapOrElse(): void
     {
