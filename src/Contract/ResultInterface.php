@@ -8,24 +8,32 @@ use Ghostwriter\Option\Contract\OptionInterface;
 use Throwable;
 
 /**
- * @template TSuccess
+ * @template TValue
  */
 interface ResultInterface
 {
     /**
-     * Returns Result if the result is Success, otherwise returns the Error value of self.
+     * Returns $result if the result is Success, otherwise returns the Error value of self.
+     *
+     * @param self<TValue> $result
+     *
+     * @return self<TValue>
      */
     public function and(self $result): self;
 
     /**
      * Calls $function if the result is Success, otherwise returns the Error value of self.
      *
-     * @param callable(Throwable|TSuccess):ResultInterface $function
+     * @template TNewValue
+     *
+     * @param callable(TValue):TNewValue $function
+     *
+     * @return self<TValue>
      */
     public function andThen(callable $function): self;
 
     /**
-     * Converts from Result<T, E> to Option<E>.
+     * Converts from Result<TValue> to Option<TValue>.
      */
     public function error(): OptionInterface;
 
@@ -57,7 +65,11 @@ interface ResultInterface
      * Maps a Result<T,E> to Result<U,E> by applying a function to a contained Success value, leaving an Error value
      * untouched.
      *
-     * @param callable(TSuccess):TSuccess $function
+     * @template TMap
+     *
+     * @param callable(TValue):TMap $function
+     *
+     * @return self<TMap>
      */
     public function map(callable $function): self;
 
@@ -65,7 +77,11 @@ interface ResultInterface
      * Maps a Result<T,E> to Result<T,F> by applying a function to a contained Error value, leaving a Success value
      * untouched.
      *
-     * @param callable(Throwable):Throwable $function
+     * @template TMapError
+     *
+     * @param callable(TValue):TMapError $function
+     *
+     * @return self<TMapError|TValue>
      */
     public function mapError(callable $function): self;
 
@@ -77,27 +93,43 @@ interface ResultInterface
     /**
      * Calls $function if the result is Error, otherwise returns the Success value of self.
      *
-     * @param callable(Throwable):ResultInterface $function
+     * @template TOrElse
+     *
+     * @param callable(TValue):TOrElse $function
+     *
+     * @return self<TOrElse|TValue>
      */
     public function orElse(callable $function): self;
 
     /**
-     * Converts from Result<T, E> to Option<T>.
+     * Converts from Result<TValue> to Option<TValue>.
+     *
+     * @return OptionInterface<TValue>
      */
     public function success(): OptionInterface;
 
     /**
      * Unwraps a result, yielding the content of a Success.
+     *
+     * @return TValue
      */
     public function unwrap(): mixed;
 
     /**
      * Unwraps a result, yielding the content of an Error.
+     *
+     * @return TValue
      */
     public function unwrapError(): mixed;
 
     /**
      * Unwraps a result, yielding the content of a Success. Else, it returns $fallback.
+     *
+     * @template TUnwrapOr
+     *
+     * @param TUnwrapOr $fallback
+     *
+     * @return TUnwrapOr|TValue
      */
     public function unwrapOr(mixed $fallback): mixed;
 
@@ -105,7 +137,11 @@ interface ResultInterface
      * Unwraps a result, yielding the content of a Success. If the value is an Error then it calls $function with its
      * value.
      *
-     * @param callable(Throwable):mixed $function
+     * @template TUnwrapOrElse
+     *
+     * @param callable(TValue):TUnwrapOrElse $function
+     *
+     * @return TUnwrapOrElse|TValue
      */
     public function unwrapOrElse(callable $function): mixed;
 }
