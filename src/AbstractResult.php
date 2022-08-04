@@ -112,11 +112,7 @@ abstract class AbstractResult implements ResultInterface
             return $value;
         }
 
-        if ($value instanceof Throwable) {
-            return Error::create($value);
-        }
-
-        return Success::create($value);
+        return $value instanceof Throwable ? Error::create($value) : Success::create($value);
     }
 
     public function or(ResultInterface $result): ResultInterface

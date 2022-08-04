@@ -179,9 +179,9 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->skip([
         '*/tests/Fixture/*',
         '*/vendor/*',
-        GroupImportFixer::class,
         BinaryOperatorSpacesFixer::class,
         GeneralPhpdocAnnotationRemoveFixer::class,
+        GroupImportFixer::class,
         PhpdocLineSpanFixer::class,
         PhpdocTrimFixer::class,
     ]);
