@@ -7,9 +7,15 @@ namespace Ghostwriter\Result\Contract;
 use Throwable;
 
 /**
+ * @template TValue of Throwable
  * @implements ResultInterface<Throwable>
  */
 interface ErrorInterface extends ResultInterface
 {
-    public function __construct(Throwable $throwable);
+    /**
+     * Create a new error value.
+     *
+     * @return self<Throwable>
+     */
+    public static function create(Throwable $throwable): self;
 }
