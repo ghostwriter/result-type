@@ -38,8 +38,8 @@ final class ErrorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->throwable =  new RuntimeException(self::ERROR_MESSAGE);
-        $this->error =  Error::create($this->throwable);
+        $this->throwable = new RuntimeException(self::ERROR_MESSAGE);
+        $this->error = Error::create($this->throwable);
     }
 
     /**
