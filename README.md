@@ -19,25 +19,27 @@ composer require ghostwriter/result
 ## Usage
 
 ```php
-use Ghostwriter\Result\{ResultInterface, Success, Error};
+use Ghostwriter\Result\Error;
+use Ghostwriter\Result\Success;
 
-// basic setting and getting of values
-$greeting = new Success('Hello world!');
-$name = new Error(new InvalidArgumentException());
+// --- Success ---
+$success = Success::create('Hello world!');
+$success->unwrap(); // 'Hello world!'
 
-echo $greeting->unwrap(); // echos 'Hello world!'
+// --- Error ---
+$error = Error::create(new ExampleException());
+$error->unwrap(); // throws: ResultException
+$error->unwrapOr('Fallback'); // 'Fallback'
+$error->unwrapError(); // returns: instance of ExampleException
 
-echo $name->unwrap(); // throws a ResultException
-echo $name->unwrapOr('Anonymous'); // echos 'Anonymous'
-echo $name->unwrapError(); // returns InvalidArgumentException
-
-// function that returns a Result<number, string>
+// --- Example ---
 function divide(int $x, int $y): ResultInterface
 {
     if ($y === 0) {
-        return new Error(new DivisionByZeroError);
+        return Error::create(new DivisionByZeroError);
     }
-    return new Success($x / $y);
+
+    return Success::create($x / $y);
 }
 
 divide(1, 0); // Error(DivisionByZeroError)
@@ -60,20 +62,7 @@ If you discover any security related issues, please email `nathanael.esayeas@pro
 
 ## Sponsors
 
-[![ghostwriter's GitHub Sponsors](https://img.shields.io/github/sponsors/ghostwriter?label=Sponsors&logo=GitHub%20Sponsors)](https://github.com/sponsors/ghostwriter)
-
-Maintaining open source software is a thankless, time-consuming job.
-
-Sponsorships are one of the best ways to contribute to the long-term sustainability of an open-source licensed project.
-
-
-Please consider giving back, to fund the continued development of `ghostwriter/result-type`, by sponsoring me here on GitHub.
-
-[[Become a GitHub Sponsor](https://github.com/sponsors/ghostwriter)]
-
-### For Developers
-
-Please consider helping your company become a GitHub Sponsor, to support the open-source licensed project that runs your business.
+[[`Become a GitHub Sponsor`](https://github.com/sponsors/ghostwriter)]
 
 ## Credits
 
