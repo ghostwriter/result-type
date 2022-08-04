@@ -12,6 +12,7 @@ use Ghostwriter\Result\Success;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Throwable;
+use function is_string;
 
 /**
  * @coversDefaultClass \Ghostwriter\Result\Success
@@ -26,7 +27,7 @@ final class SuccessTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->success =  Success::create(42);
+        $this->success = Success::create(42);
     }
 
     /**
@@ -73,7 +74,7 @@ final class SuccessTest extends TestCase
      */
     public function testConstruct(): void
     {
-        $success =  Success::create('foo');
+        $success = Success::create('foo');
         self::assertTrue($success->isSuccess());
     }
 
