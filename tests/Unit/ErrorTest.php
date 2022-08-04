@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ghostwriter\Result\Tests\Unit;
 
+use Ghostwriter\Option\Contract\SomeInterface;
 use Ghostwriter\Option\None;
 use Ghostwriter\Option\Some;
 use Ghostwriter\Result\Contract\ErrorInterface;
@@ -28,25 +29,31 @@ final class ErrorTest extends TestCase
      */
     public const ERROR_MESSAGE = 'Testing error result.';
 
-    private Error $error;
+    /**
+     * @var ErrorInterface<Throwable>
+     */
+    private ErrorInterface $error;
 
     private RuntimeException $throwable;
 
     protected function setUp(): void
     {
         $this->throwable =  new RuntimeException(self::ERROR_MESSAGE);
-        $this->error =  new Error($this->throwable);
+        $this->error =  Error::create($this->throwable);
     }
 
     /**
+     * @covers \Ghostwriter\Result\AbstractResult::of
      * @covers \Ghostwriter\Result\AbstractResult::and
      * @covers \Ghostwriter\Result\AbstractResult::isError
      * @covers \Ghostwriter\Result\Success::__construct
+     * @covers \Ghostwriter\Result\Success::create
      * @covers \Ghostwriter\Result\Error::__construct
+     * @covers \Ghostwriter\Result\Error::create
      */
     public function testAnd(): void
     {
-        $success = new Success('foobar');
+        $success = Success::of('foobar');
         $result = $this->error->and($success);
 
         self::assertTrue($result->isError());
@@ -54,12 +61,15 @@ final class ErrorTest extends TestCase
 
     /**
      * @covers \Ghostwriter\Result\AbstractResult::andThen
+     * @covers \Ghostwriter\Result\AbstractResult::call
+     * @covers \Ghostwriter\Result\AbstractResult::of
      * @covers \Ghostwriter\Result\AbstractResult::isError
      * @covers \Ghostwriter\Result\Error::__construct
+     * @covers \Ghostwriter\Result\Error::create
      */
     public function testAndThen(): void
     {
-        $result = $this->error->andThen(static fn (mixed $value): Success => new Success($value));
+        $result = $this->error->andThen(static fn (mixed $value): mixed => $value);
         self::assertTrue($result->isError());
         self::assertSame($this->error, $result);
     }
@@ -67,16 +77,18 @@ final class ErrorTest extends TestCase
     /**
      * @covers \Ghostwriter\Result\AbstractResult::isError
      * @covers \Ghostwriter\Result\Error::__construct
+     * @covers \Ghostwriter\Result\Error::create
      */
     public function testConstruct(): void
     {
-        $error = new Error($this->throwable);
+        $error = Error::create($this->throwable);
         self::assertTrue($error->isError());
     }
 
     /**
      * @covers \Ghostwriter\Result\AbstractResult::error
      * @covers \Ghostwriter\Result\Error::__construct
+     * @covers \Ghostwriter\Result\Error::create
      */
     public function testError(): void
     {
@@ -86,6 +98,7 @@ final class ErrorTest extends TestCase
     /**
      * @covers \Ghostwriter\Result\AbstractResult::expect
      * @covers \Ghostwriter\Result\Error::__construct
+     * @covers \Ghostwriter\Result\Error::create
      *
      * @throws Throwable
      */
@@ -100,6 +113,7 @@ final class ErrorTest extends TestCase
      * @covers \Ghostwriter\Result\AbstractResult::expectError
      * @covers \Ghostwriter\Result\AbstractResult::isError
      * @covers \Ghostwriter\Result\Error::__construct
+     * @covers \Ghostwriter\Result\Error::create
      *
      * @throws Throwable
      */
@@ -111,8 +125,9 @@ final class ErrorTest extends TestCase
     /**
      * @covers \Ghostwriter\Result\AbstractResult::isError
      * @covers \Ghostwriter\Result\Error::__construct
+     * @covers \Ghostwriter\Result\Error::create
      */
-    public function testIsError(): void
+    public function testisError(): void
     {
         self::assertTrue($this->error->isError());
     }
@@ -120,6 +135,7 @@ final class ErrorTest extends TestCase
     /**
      * @covers \Ghostwriter\Result\AbstractResult::isSuccess
      * @covers \Ghostwriter\Result\Error::__construct
+     * @covers \Ghostwriter\Result\Error::create
      */
     public function testIsSuccess(): void
     {
@@ -129,12 +145,15 @@ final class ErrorTest extends TestCase
     /**
      * @covers \Ghostwriter\Result\AbstractResult::isError
      * @covers \Ghostwriter\Result\AbstractResult::map
+     * @covers \Ghostwriter\Result\AbstractResult::call
+     * @covers \Ghostwriter\Result\AbstractResult::of
      * @covers \Ghostwriter\Result\AbstractResult::unwrapError
      * @covers \Ghostwriter\Result\Error::__construct
+     * @covers \Ghostwriter\Result\Error::create
      */
     public function testMap(): void
     {
-        $result = $this->error->map(static fn (Throwable $x): Throwable => $x);
+        $result = $this->error->map(static fn (mixed $x): mixed => $x);
 
         self::assertTrue($result->isError());
         self::assertSame($this->error, $result);
@@ -143,16 +162,21 @@ final class ErrorTest extends TestCase
 
     /**
      * @covers \Ghostwriter\Result\AbstractResult::isError
+     * @covers \Ghostwriter\Result\AbstractResult::of
+     * @covers \Ghostwriter\Result\AbstractResult::call
      * @covers \Ghostwriter\Result\AbstractResult::mapError
      * @covers \Ghostwriter\Result\AbstractResult::unwrapError
      * @covers \Ghostwriter\Result\Error::__construct
+     * @covers \Ghostwriter\Result\Error::create
      */
     public function testMapError(): void
     {
         $result = $this->error->mapError(static fn (mixed $x): mixed => $x);
 
-        self::assertTrue($result->isError());
         self::assertNotSame($this->error, $result);
+
+        self::assertTrue($result->isError());
+
         self::assertSame($this->throwable, $result->unwrapError());
     }
 
@@ -161,11 +185,13 @@ final class ErrorTest extends TestCase
      * @covers \Ghostwriter\Result\AbstractResult::or
      * @covers \Ghostwriter\Result\AbstractResult::unwrap
      * @covers \Ghostwriter\Result\Success::__construct
+     * @covers \Ghostwriter\Result\Success::create
      * @covers \Ghostwriter\Result\Error::__construct
+     * @covers \Ghostwriter\Result\Error::create
      */
     public function testOr(): void
     {
-        $success = new Success('foobar');
+        $success = Success::create('foobar');
         $result = $this->error->or($success);
 
         self::assertTrue($result->isSuccess());
@@ -176,14 +202,18 @@ final class ErrorTest extends TestCase
     /**
      * @covers \Ghostwriter\Result\AbstractResult::isSuccess
      * @covers \Ghostwriter\Result\AbstractResult::orElse
+     * @covers \Ghostwriter\Result\AbstractResult::call
+     * @covers \Ghostwriter\Result\AbstractResult::of
      * @covers \Ghostwriter\Result\AbstractResult::unwrap
      * @covers \Ghostwriter\Result\Success::__construct
+     * @covers \Ghostwriter\Result\Success::create
      * @covers \Ghostwriter\Result\Error::__construct
+     * @covers \Ghostwriter\Result\Error::create
      */
     public function testOrElse(): void
     {
-        $success = new Success('foobar');
-        $result = $this->error->orElse(static fn (): Success => $success);
+        $success = Success::create('foobar');
+        $result = $this->error->orElse(static fn () => $success);
 
         self::assertTrue($result->isSuccess());
         self::assertSame($success, $result);
@@ -193,6 +223,7 @@ final class ErrorTest extends TestCase
     /**
      * @covers \Ghostwriter\Result\AbstractResult::success
      * @covers \Ghostwriter\Result\Error::__construct
+     * @covers \Ghostwriter\Result\Error::create
      */
     public function testSuccess(): void
     {
@@ -203,6 +234,7 @@ final class ErrorTest extends TestCase
      * @covers \Ghostwriter\Result\AbstractResult::unwrap
      * @covers \Ghostwriter\Result\Exception\ResultException::invalidMethodCall
      * @covers \Ghostwriter\Result\Error::__construct
+     * @covers \Ghostwriter\Result\Error::create
      */
     public function testUnwrap(): void
     {
@@ -217,6 +249,7 @@ final class ErrorTest extends TestCase
      * @covers \Ghostwriter\Result\AbstractResult::isError
      * @covers \Ghostwriter\Result\AbstractResult::unwrapError
      * @covers \Ghostwriter\Result\Error::__construct
+     * @covers \Ghostwriter\Result\Error::create
      */
     public function testUnwrapError(): void
     {
@@ -226,6 +259,7 @@ final class ErrorTest extends TestCase
     /**
      * @covers \Ghostwriter\Result\AbstractResult::unwrapOr
      * @covers \Ghostwriter\Result\Error::__construct
+     * @covers \Ghostwriter\Result\Error::create
      */
     public function testUnwrapOr(): void
     {
@@ -233,12 +267,16 @@ final class ErrorTest extends TestCase
     }
 
     /**
+     * @covers \Ghostwriter\Result\AbstractResult::error
      * @covers \Ghostwriter\Result\AbstractResult::unwrapOrElse
      * @covers \Ghostwriter\Result\Error::__construct
+     * @covers \Ghostwriter\Result\Error::create
      */
     public function testUnwrapOrElse(): void
     {
         $fn = static fn (): bool => true;
+        self::assertInstanceOf(SomeInterface::class, $this->error->error());
         self::assertTrue($this->error->unwrapOrElse($fn));
+        //        self::assertSame(42, $this->error->unwrapOrElse($fn));
     }
 }

@@ -9,19 +9,16 @@ use Ghostwriter\Result\Contract\SuccessInterface;
 /**
  * Represents the result of successful operation.
  *
- * @template TSuccess
- * @extends AbstractResult<TSuccess>
- * @implements SuccessInterface<TSuccess>
+ * @template TValue
+ * @extends AbstractResult<TValue>
+ * @implements SuccessInterface<TValue>
  *
  * @see \Ghostwriter\Result\Tests\Unit\SuccessTest
  */
 final class Success extends AbstractResult implements SuccessInterface
 {
-    /**
-     * @param TSuccess $value
-     */
-    public function __construct(mixed $value)
+    public static function create(mixed $value): SuccessInterface
     {
-        $this->value = $value;
+        return new self($value);
     }
 }

@@ -8,16 +8,18 @@ use Ghostwriter\Result\Contract\ErrorInterface;
 use Throwable;
 
 /**
- * Represents the result of errorful operation.
+ * Represents the result of an erroneous operation.
  *
- * @extends AbstractResult<Throwable>
+ * @template TValue of Throwable
+ * @extends AbstractResult<TValue>
+ * @implements ErrorInterface<TValue>
  *
  * @see \Ghostwriter\Result\Tests\Unit\ErrorTest
  */
 final class Error extends AbstractResult implements ErrorInterface
 {
-    public function __construct(Throwable $throwable)
+    public static function create(Throwable $throwable): self
     {
-        $this->value = $throwable;
+        return new self($throwable);
     }
 }

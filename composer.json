@@ -30,18 +30,17 @@
         }
     ],
     "require": {
-        "php": ">=8.0, <8.2",
-        "ghostwriter/option": "^0.1.0"
+        "php": ">=8.0,<8.2",
+        "ghostwriter/option": "^0.3.0"
     },
     "require-dev": {
-        "phpbench/phpbench": "^1.2.5",
-        "phpunit/phpunit": "^9.5.20",
-        "psalm/plugin-phpunit": "^0.16.1",
-        "rector/rector": "^0.12.23",
-        "roave/infection-static-analysis-plugin": "^1.18.0",
-        "roave/security-advisories": "dev-latest",
-        "symplify/easy-coding-standard": "^10.2.6",
-        "vimeo/psalm": "^4.23.0"
+        "infection/infection": "0.26.13",
+        "phpbench/phpbench": "^1.2.6",
+        "phpunit/phpunit": "^9.5.21",
+        "psalm/plugin-phpunit": "^0.17.0",
+        "rector/rector": "^0.13.10",
+        "symplify/easy-coding-standard": "^11.0.9",
+        "vimeo/psalm": "^4.26"
     },
     "replace": {},
     "minimum-stability": "stable",
@@ -87,14 +86,12 @@
         "cs-check": "vendor/bin/ecs check --clear-cache || true",
         "cs-fix": "vendor/bin/ecs check --fix --clear-cache",
         "dev": [
-            "@cs-fix",
-            "@test",
-            "@psalm",
+            "@check",
             "@infection"
         ],
         "infection": [
             "@putenv XDEBUG_MODE=coverage",
-            "roave-infection-static-analysis-plugin"
+            "vendor/bin/infection"
         ],
         "missing-returntypes": "psalm --alter --issues=MissingReturnType",
         "normalizer": "composer normalize --no-check-lock",
