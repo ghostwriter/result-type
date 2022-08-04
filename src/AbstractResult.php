@@ -13,159 +13,182 @@ use Ghostwriter\Result\Contract\SuccessInterface;
 use Ghostwriter\Result\Exception\ResultException;
 use Throwable;
 
- /**
-  * @template TSuccess
-  * @implements ResultInterface<TSuccess|Throwable>
-  */
- abstract class AbstractResult implements ResultInterface
- {
-     /**
-      * @var Throwable|TSuccess
-      */
-     protected mixed $value;
+/**
+ * @template TValue
+ * @implements ResultInterface<TValue>
+ */
+abstract class AbstractResult implements ResultInterface
+{
+    /**
+     * @var OptionInterface<TValue>
+     */
+    private OptionInterface $option;
 
-     public function and(ResultInterface $result): ResultInterface
-     {
-         if ($this instanceof ErrorInterface) {
-             return $this;
-         }
+    /**
+     * @param TValue $value
+     */
+    protected function __construct(mixed $value)
+    {
+        $this->option = Some::of($value);
+    }
 
-         return $result;
-     }
+    public function and(ResultInterface $result): ResultInterface
+    {
+        if ($this instanceof ErrorInterface) {
+            return $this;
+        }
 
-     public function andThen(callable $function): ResultInterface
-     {
-         if ($this instanceof ErrorInterface) {
-             return $this;
-         }
+        return $result;
+    }
 
-         return $function($this->value);
-     }
+    public function andThen(callable $function): ResultInterface
+    {
+        if ($this instanceof ErrorInterface) {
+            return $this;
+        }
 
-     public function error(): OptionInterface
-     {
-         if ($this instanceof SuccessInterface) {
-             return None::create();
-         }
+        return $this->call($function);
+    }
 
-         return Some::create($this->value);
-     }
+    public function error(): OptionInterface
+    {
+        if ($this instanceof ErrorInterface) {
+            return $this->option;
+        }
 
-     public function expect(Throwable $throwable): mixed
-     {
-         if ($this instanceof SuccessInterface) {
-             return $this->value;
-         }
+        return None::create();
+    }
 
-         throw $throwable;
-     }
+    public function expect(Throwable $throwable): mixed
+    {
+        if ($this instanceof ErrorInterface) {
+            throw $throwable;
+        }
 
-     public function expectError(Throwable $throwable): Throwable
-     {
-         if ($this instanceof ErrorInterface) {
-             /** @var Throwable */
-             return $this->value;
-         }
+        return $this->option->unwrap();
+    }
 
-         throw $throwable;
-     }
+    public function expectError(Throwable $throwable): Throwable
+    {
+        if ($this instanceof SuccessInterface) {
+            throw $throwable;
+        }
 
-     public function isError(): bool
-     {
-         return $this instanceof ErrorInterface;
-     }
+        /** @var OptionInterface<Throwable> $this->option */
+        return $this->option->unwrap();
+    }
 
-     public function isSuccess(): bool
-     {
-         return $this instanceof SuccessInterface;
-     }
+    public function isError(): bool
+    {
+        return $this instanceof ErrorInterface;
+    }
 
-     public function map(callable $function): ResultInterface
-     {
-         if ($this instanceof ErrorInterface) {
-             return $this;
-         }
+    public function isSuccess(): bool
+    {
+        return $this instanceof SuccessInterface;
+    }
 
-         return new Success($function($this->value));
-     }
+    public function map(callable $function): ResultInterface
+    {
+        if ($this instanceof ErrorInterface) {
+            return $this;
+        }
 
-     public function mapError(callable $function): ResultInterface
-     {
-         if ($this instanceof SuccessInterface) {
-             return $this;
-         }
+        return $this->call($function);
+    }
 
-         /** @var Throwable $value */
-         $value = $this->value;
+    public function mapError(callable $function): ResultInterface
+    {
+        if ($this instanceof SuccessInterface) {
+            return $this;
+        }
 
-         return new Error($function($value));
-     }
+        return $this->call($function);
+    }
 
-     public function or(ResultInterface $result): ResultInterface
-     {
-         if ($this instanceof SuccessInterface) {
-             return $this;
-         }
+    public static function of(mixed $value): ResultInterface
+    {
+        if ($value instanceof ResultInterface) {
+            return $value;
+        }
 
-         return $result;
-     }
+        if ($value instanceof Throwable) {
+            return Error::create($value);
+        }
 
-     public function orElse(callable $function): ResultInterface
-     {
-         if ($this instanceof SuccessInterface) {
-             return $this;
-         }
+        return Success::create($value);
+    }
 
-         /** @var Throwable $value */
-         $value = $this->value;
+    public function or(ResultInterface $result): ResultInterface
+    {
+        if ($this instanceof SuccessInterface) {
+            return $this;
+        }
 
-         return $function($value);
-     }
+        return $result;
+    }
 
-     public function success(): OptionInterface
-     {
-         if ($this instanceof SuccessInterface) {
-             return Some::create($this->value);
-         }
+    public function orElse(callable $function): ResultInterface
+    {
+        if ($this instanceof SuccessInterface) {
+            return $this;
+        }
 
-         return None::create();
-     }
+        return $this->call($function);
+    }
 
-     public function unwrap(): mixed
-     {
-         if ($this instanceof SuccessInterface) {
-             return $this->value;
-         }
+    public function success(): OptionInterface
+    {
+        if ($this instanceof SuccessInterface) {
+            return $this->option;
+        }
 
-         throw ResultException::invalidMethodCall('unwrap', ErrorInterface::class);
-     }
+        return None::create();
+    }
 
-     public function unwrapError(): mixed
-     {
-         if ($this instanceof ErrorInterface) {
-             return $this->value;
-         }
+    public function unwrap(): mixed
+    {
+        if ($this instanceof SuccessInterface) {
+            return $this->option->unwrap();
+        }
 
-         throw ResultException::invalidMethodCall('unwrapError', SuccessInterface::class);
-     }
+        throw ResultException::invalidMethodCall('unwrap', ErrorInterface::class);
+    }
 
-     public function unwrapOr(mixed $fallback): mixed
-     {
-         if ($this instanceof SuccessInterface) {
-             return $this->value;
-         }
+    public function unwrapError(): mixed
+    {
+        if ($this instanceof ErrorInterface) {
+            return $this->option->unwrap();
+        }
 
-         return $fallback;
-     }
+        throw ResultException::invalidMethodCall('unwrapError', SuccessInterface::class);
+    }
 
-     public function unwrapOrElse(callable $function): mixed
-     {
-         $value = $this->value;
-         if ($this instanceof SuccessInterface) {
-             return $value;
-         }
+    public function unwrapOr(mixed $fallback): mixed
+    {
+        if ($this instanceof SuccessInterface) {
+            return $this->option->unwrap();
+        }
 
-         /** @var Throwable $value */
-         return $function($value);
-     }
- }
+        return $fallback;
+    }
+
+    public function unwrapOrElse(callable $function): mixed
+    {
+        if ($this instanceof SuccessInterface) {
+            return $this->option->unwrap();
+        }
+
+        return $this->option->map($function)
+            ->unwrap();
+    }
+
+    private function call(callable $function): ResultInterface
+    {
+        try {
+            return self::of($function($this->option->unwrap()));
+        } catch (Throwable $throwable) {
+            return Error::create($throwable);
+        }
+    }
+}
