@@ -10,7 +10,9 @@ use Ghostwriter\Result\Contract\SuccessInterface;
  * Represents the result of successful operation.
  *
  * @template TValue
+ *
  * @extends AbstractResult<TValue>
+ *
  * @implements SuccessInterface<TValue>
  *
  * @see \Ghostwriter\Result\Tests\Unit\SuccessTest
