@@ -8,6 +8,7 @@ use Throwable;
 
 /**
  * @template TValue of Throwable
+ *
  * @implements ResultInterface<Throwable>
  */
 interface ErrorInterface extends ResultInterface
