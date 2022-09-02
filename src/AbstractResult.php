@@ -15,6 +15,7 @@ use Throwable;
 
 /**
  * @template TValue
+ *
  * @implements ResultInterface<TValue>
  */
 abstract class AbstractResult implements ResultInterface
