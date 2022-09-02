@@ -11,7 +11,9 @@ use Throwable;
  * Represents the result of an erroneous operation.
  *
  * @template TValue of Throwable
+ *
  * @extends AbstractResult<TValue>
+ *
  * @implements ErrorInterface<TValue>
  *
  * @see \Ghostwriter\Result\Tests\Unit\ErrorTest
