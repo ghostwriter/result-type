@@ -200,7 +200,7 @@ final class SuccessTest extends TestCase
      */
     public function testOrElse(): void
     {
-        $result = $this->success->orElse(static function (): void {
+        $result = $this->success->orElse(static function (): never {
             self::fail('Should not be called!');
         });
 
