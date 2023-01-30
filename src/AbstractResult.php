@@ -23,7 +23,7 @@ abstract class AbstractResult implements ResultInterface
     /**
      * @var OptionInterface<TValue>
      */
-    private OptionInterface $option;
+    private readonly OptionInterface $option;
 
     /**
      * @param TValue $value
