@@ -9,7 +9,7 @@ use Throwable;
 /**
  * @template TValue of Throwable
  *
- * @implements ResultInterface<Throwable>
+ * @extends ResultInterface<Throwable>
  */
 interface ErrorInterface extends ResultInterface
 {

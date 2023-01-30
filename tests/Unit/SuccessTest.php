@@ -12,7 +12,6 @@ use Ghostwriter\Result\Success;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Throwable;
-use function is_string;
 
 /**
  * @coversDefaultClass \Ghostwriter\Result\Success
@@ -61,7 +60,7 @@ final class SuccessTest extends TestCase
     public function testAndThen(): void
     {
         $result = Success::create('foo')
-            ->andThen(static fn ($word): string => is_string($word) ? 'foobar' : 'baz');
+            ->andThen(static fn (string $word): string => $word . 'bar');
 
         self::assertTrue($result->isSuccess());
         self::assertSame('foobar', $result->unwrap());

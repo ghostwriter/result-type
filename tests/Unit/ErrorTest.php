@@ -8,6 +8,7 @@ use Ghostwriter\Option\Contract\SomeInterface;
 use Ghostwriter\Option\None;
 use Ghostwriter\Option\Some;
 use Ghostwriter\Result\Contract\ErrorInterface;
+use Ghostwriter\Result\Contract\SuccessInterface;
 use Ghostwriter\Result\Error;
 use Ghostwriter\Result\Exception\ResultException;
 use Ghostwriter\Result\Success;
@@ -34,12 +35,12 @@ final class ErrorTest extends TestCase
      */
     private ErrorInterface $error;
 
-    private RuntimeException $throwable;
+    private RuntimeException $runtimeException;
 
     protected function setUp(): void
     {
-        $this->throwable = new RuntimeException(self::ERROR_MESSAGE);
-        $this->error = Error::create($this->throwable);
+        $this->runtimeException = new RuntimeException(self::ERROR_MESSAGE);
+        $this->error = Error::create($this->runtimeException);
     }
 
     /**
@@ -81,7 +82,7 @@ final class ErrorTest extends TestCase
      */
     public function testConstruct(): void
     {
-        $error = Error::create($this->throwable);
+        $error = Error::create($this->runtimeException);
         self::assertTrue($error->isError());
     }
 
@@ -119,7 +120,7 @@ final class ErrorTest extends TestCase
      */
     public function testExpectError(): void
     {
-        self::assertSame($this->throwable, $this->error->expectError(new RuntimeException('oops!')));
+        self::assertSame($this->runtimeException, $this->error->expectError(new RuntimeException('oops!')));
     }
 
     /**
@@ -157,7 +158,7 @@ final class ErrorTest extends TestCase
 
         self::assertTrue($result->isError());
         self::assertSame($this->error, $result);
-        self::assertSame($this->throwable, $result->unwrapError());
+        self::assertSame($this->runtimeException, $result->unwrapError());
     }
 
     /**
@@ -177,7 +178,7 @@ final class ErrorTest extends TestCase
 
         self::assertTrue($result->isError());
 
-        self::assertSame($this->throwable, $result->unwrapError());
+        self::assertSame($this->runtimeException, $result->unwrapError());
     }
 
     /**
@@ -213,7 +214,7 @@ final class ErrorTest extends TestCase
     public function testOrElse(): void
     {
         $success = Success::create('foobar');
-        $result = $this->error->orElse(static fn () => $success);
+        $result = $this->error->orElse(static fn (): SuccessInterface => $success);
 
         self::assertTrue($result->isSuccess());
         self::assertSame($success, $result);
@@ -253,7 +254,7 @@ final class ErrorTest extends TestCase
      */
     public function testUnwrapError(): void
     {
-        self::assertSame($this->throwable, $this->error->unwrapError());
+        self::assertSame($this->runtimeException, $this->error->unwrapError());
     }
 
     /**

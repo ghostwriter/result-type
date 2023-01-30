@@ -8,7 +8,6 @@ use Rector\Core\ValueObject\PhpVersion;
 use Rector\DeadCode\Rector\ClassMethod\RemoveEmptyClassMethodRector;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
 use Rector\Php74\Rector\Property\RestoreDefaultNullToNullableTypePropertyRector;
-use Rector\Php74\Rector\Property\TypedPropertyRector;
 use Rector\PHPUnit\Rector\Class_\AddSeeTestAnnotationRector;
 use Rector\PHPUnit\Rector\Class_\ConstructClassMethodToSetUpTestCaseRector;
 use Rector\PHPUnit\Rector\Class_\RemoveDataProviderTestPrefixRector;
@@ -54,21 +53,8 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->importShortClasses();
     $rectorConfig->parallel();
     $rectorConfig->sets([
-        PHPUnitLevelSetList::UP_TO_PHPUNIT_50,
-        PHPUnitLevelSetList::UP_TO_PHPUNIT_60,
-        PHPUnitLevelSetList::UP_TO_PHPUNIT_70,
-        PHPUnitLevelSetList::UP_TO_PHPUNIT_80,
         PHPUnitLevelSetList::UP_TO_PHPUNIT_90,
-        PHPUnitLevelSetList::UP_TO_PHPUNIT_100,
-        LevelSetList::UP_TO_PHP_54,
-        LevelSetList::UP_TO_PHP_55,
-        LevelSetList::UP_TO_PHP_56,
-        LevelSetList::UP_TO_PHP_70,
-        LevelSetList::UP_TO_PHP_71,
-        LevelSetList::UP_TO_PHP_72,
-        LevelSetList::UP_TO_PHP_73,
-        LevelSetList::UP_TO_PHP_74,
-        LevelSetList::UP_TO_PHP_80,
+        // PHPUnitLevelSetList::UP_TO_PHPUNIT_100,
         LevelSetList::UP_TO_PHP_81,
         SetList::CODE_QUALITY,
         SetList::CODING_STYLE,
@@ -77,19 +63,7 @@ return static function (RectorConfig $rectorConfig): void {
         SetList::PRIVATIZATION,
         SetList::PSR_4,
         SetList::TYPE_DECLARATION,
-        SetList::TYPE_DECLARATION_STRICT,
         SetList::EARLY_RETURN,
-        SetList::PHP_52,
-        SetList::PHP_53,
-        SetList::PHP_54,
-        SetList::PHP_55,
-        SetList::PHP_56,
-        SetList::PHP_70,
-        SetList::PHP_71,
-        SetList::PHP_72,
-        SetList::PHP_73,
-        SetList::PHP_74,
-        SetList::PHP_80,
         SetList::PHP_81,
     ]);
     $rectorConfig->paths([__DIR__ . '/src', __DIR__ . '/tests', __DIR__ . '/ecs.php', __DIR__ . '/rector.php']);
@@ -139,7 +113,6 @@ return static function (RectorConfig $rectorConfig): void {
         SpecificAssertInternalTypeRector::class,
         TestListenerToHooksRector::class,
         TryCatchToExpectExceptionRector::class,
-        TypedPropertyRector::class,
         UseSpecificWillMethodRector::class,
     ]);
 };
