@@ -15,9 +15,11 @@ interface ResultInterface
     /**
      * Returns $result if the result is Success, otherwise returns the Error value of self.
      *
-     * @param self<TValue> $result
+     * @template TAndValue
      *
-     * @return self<TValue>
+     * @param self<TAndValue> $result
+     *
+     * @return self<TAndValue>
      */
     public function and(self $result): self;
 
