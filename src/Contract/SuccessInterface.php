@@ -7,7 +7,7 @@ namespace Ghostwriter\Result\Contract;
 /**
  * @template TValue
  *
- * @implements ResultInterface<TValue>
+ * @extends ResultInterface<TValue>
  */
 interface SuccessInterface extends ResultInterface
 {
