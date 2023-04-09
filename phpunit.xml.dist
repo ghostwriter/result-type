@@ -2,19 +2,31 @@
 <phpunit
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
+    beStrictAboutChangesToGlobalState="true"
     beStrictAboutCoverageMetadata="true"
     beStrictAboutOutputDuringTests="true"
+    beStrictAboutTodoAnnotatedTests="true"
     bootstrap="vendor/autoload.php"
     cacheDirectory=".cache/phpunit"
     colors="true"
+    displayDetailsOnIncompleteTests="true"
+    displayDetailsOnSkippedTests="true"
+    displayDetailsOnTestsThatTriggerDeprecations="true"
+    displayDetailsOnTestsThatTriggerErrors="true"
+    displayDetailsOnTestsThatTriggerNotices="true"
+    displayDetailsOnTestsThatTriggerWarnings="true"
     executionOrder="depends,defects"
+    failOnEmptyTestSuite="true"
+    failOnIncomplete="true"
     failOnRisky="true"
+    failOnSkipped="true"
     failOnWarning="true"
     requireCoverageMetadata="true"
+    stopOnFailure="true"
     testdox="true"
 >
   <testsuites>
-    <testsuite name="Test Suite">
+    <testsuite name="Result Test Suite">
       <directory>tests</directory>
     </testsuite>
   </testsuites>
