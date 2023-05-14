@@ -30,8 +30,8 @@
         }
     ],
     "require": {
-        "php": ">=8.1,<8.3",
-        "ghostwriter/option": "^1.4"
+        "php": ">=8.1 <8.3",
+        "ghostwriter/option": "^1.5"
     },
     "require-dev": {
         "ghostwriter/coding-standard": "dev-main"
@@ -82,7 +82,7 @@
             "@infection"
         ],
         "infection": [
-            "@putenv XDEBUG_MODE=coverage",
+            "@xdebug",
             "vendor/bin/infection"
         ],
         "missing-returntypes": "psalm --alter --issues=MissingReturnType",
