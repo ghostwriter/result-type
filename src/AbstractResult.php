@@ -7,7 +7,6 @@ namespace Ghostwriter\Result;
 use Ghostwriter\Option\None;
 use Ghostwriter\Option\Option;
 use Ghostwriter\Option\OptionInterface;
-use Ghostwriter\Option\Some;
 use Ghostwriter\Result\Contract\ErrorInterface;
 use Ghostwriter\Result\Contract\ResultInterface;
 use Ghostwriter\Result\Contract\SuccessInterface;

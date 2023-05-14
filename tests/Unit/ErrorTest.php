@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Ghostwriter\Result\Tests\Unit;
 
-use Ghostwriter\Option\SomeInterface;
 use Ghostwriter\Option\None;
 use Ghostwriter\Option\Some;
+use Ghostwriter\Option\SomeInterface;
 use Ghostwriter\Result\Contract\ErrorInterface;
 use Ghostwriter\Result\Contract\SuccessInterface;
 use Ghostwriter\Result\Error;
