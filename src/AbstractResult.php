@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Ghostwriter\Result;
 
-use Ghostwriter\Option\Contract\OptionInterface;
 use Ghostwriter\Option\None;
+use Ghostwriter\Option\Option;
+use Ghostwriter\Option\OptionInterface;
 use Ghostwriter\Option\Some;
 use Ghostwriter\Result\Contract\ErrorInterface;
 use Ghostwriter\Result\Contract\ResultInterface;
@@ -30,7 +31,7 @@ abstract class AbstractResult implements ResultInterface
      */
     protected function __construct(mixed $value)
     {
-        $this->option = Some::of($value);
+        $this->option = Option::create($value);
     }
 
     public function and(ResultInterface $result): ResultInterface
