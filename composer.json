@@ -45,7 +45,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Ghostwriter\\Result\\Tests\\": "tests/"
+            "Ghostwriter\\Result\\Tests\\Unit\\": "tests/Unit"
         }
     },
     "config": {
@@ -88,7 +88,7 @@
         "missing-returntypes": "psalm --alter --issues=MissingReturnType",
         "normalizer": "composer normalize --no-check-lock",
         "phpbench": "phpbench run",
-        "phpunit": "phpunit --colors=always --testdox --stop-on-failure",
+        "phpunit": "phpunit --colors=always --stop-on-defect",
         "psalm": "@psalm:shepherd",
         "psalm:baseline": "psalm --set-baseline=psalm-baseline.xml",
         "psalm:dry-run": "psalm --alter --issues=all --dry-run",
