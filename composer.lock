@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "67770afa5b65a5837ef7faf9cfd6a3e5",
+    "content-hash": "089f73e827cb99d3399f0fddb92ece6d",
     "packages": [
         {
             "name": "ghostwriter/option",
@@ -1194,16 +1194,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ghostwriter/coding-standard.git",
-                "reference": "989829fb899962fdc0223a3740fe7a1ac6c85a5e"
+                "reference": "3819363ec1be6b014af9b7c0b5d9dc1becc84351"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ghostwriter/coding-standard/zipball/989829fb899962fdc0223a3740fe7a1ac6c85a5e",
-                "reference": "989829fb899962fdc0223a3740fe7a1ac6c85a5e",
+                "url": "https://api.github.com/repos/ghostwriter/coding-standard/zipball/3819363ec1be6b014af9b7c0b5d9dc1becc84351",
+                "reference": "3819363ec1be6b014af9b7c0b5d9dc1becc84351",
                 "shasum": ""
             },
             "require": {
-                "friendsofphp/php-cs-fixer": "^3.20.0",
+                "friendsofphp/php-cs-fixer": "^3.21.1",
                 "infection/infection": "^0.27.0",
                 "php": ">=8.1,<8.3",
                 "phpbench/phpbench": "^1.2.10",
@@ -1248,7 +1248,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-06-30T14:30:34+00:00"
+            "time": "2023-07-06T00:20:30+00:00"
         },
         {
             "name": "infection/abstract-testframework-adapter",
@@ -6238,7 +6238,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.1 <8.3"
+        "php": ">=8.1,<8.4"
     },
     "platform-dev": [],
     "plugin-api-version": "2.3.0"
