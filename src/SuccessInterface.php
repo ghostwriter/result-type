@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ghostwriter\Result\Contract;
+namespace Ghostwriter\Result;
 
 /**
  * @template TValue

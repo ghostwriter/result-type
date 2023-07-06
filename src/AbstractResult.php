@@ -7,9 +7,6 @@ namespace Ghostwriter\Result;
 use Ghostwriter\Option\None;
 use Ghostwriter\Option\Option;
 use Ghostwriter\Option\OptionInterface;
-use Ghostwriter\Result\Contract\ErrorInterface;
-use Ghostwriter\Result\Contract\ResultInterface;
-use Ghostwriter\Result\Contract\SuccessInterface;
 use Ghostwriter\Result\Exception\ResultException;
 use Throwable;
 
@@ -22,8 +19,10 @@ abstract class AbstractResult implements ResultInterface
 {
     /**
      * @var OptionInterface<TValue>
+     *
+     * @readonly
      */
-    private readonly OptionInterface $option;
+    private OptionInterface $option;
 
     /**
      * @param TValue $value
@@ -75,8 +74,10 @@ abstract class AbstractResult implements ResultInterface
             throw $throwable;
         }
 
-        /** @var OptionInterface<Throwable> $this->option */
-        return $this->option->unwrap();
+        /** @var Throwable $throwable */
+        $throwable = $this->option->unwrap();
+
+        return $throwable;
     }
 
     public function isError(): bool
@@ -149,7 +150,7 @@ abstract class AbstractResult implements ResultInterface
             return $this->option->unwrap();
         }
 
-        throw ResultException::invalidMethodCall('unwrap', ErrorInterface::class);
+        throw new ResultException(sprintf('Invalid method call "unwrap()" on a Result of type %s', static::class));
     }
 
     public function unwrapError(): mixed
@@ -158,7 +159,9 @@ abstract class AbstractResult implements ResultInterface
             return $this->option->unwrap();
         }
 
-        throw ResultException::invalidMethodCall('unwrapError', SuccessInterface::class);
+        throw new ResultException(
+            sprintf('Invalid method call "unwrapError()" on a Result of type %s', static::class)
+        );
     }
 
     public function unwrapOr(mixed $fallback): mixed
@@ -180,10 +183,18 @@ abstract class AbstractResult implements ResultInterface
             ->unwrap();
     }
 
+    /**
+     * @template TNewValue
+     *
+     * @param callable(TValue):TNewValue $function
+     */
     private function call(callable $function): ResultInterface
     {
         try {
-            return self::of($function($this->option->unwrap()));
+            /** @var TValue $value */
+            $value = $this->option->unwrap();
+
+            return self::of($function($value));
         } catch (Throwable $throwable) {
             return Error::create($throwable);
         }

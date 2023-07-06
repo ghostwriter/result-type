@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ghostwriter\Result;
 
-use Ghostwriter\Result\Contract\ErrorInterface;
 use Throwable;
 
 /**

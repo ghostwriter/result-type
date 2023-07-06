@@ -24,14 +24,6 @@
         failOnSkipped="true"
         failOnWarning="true"
         requireCoverageMetadata="true"
-        stopOnDefect="true"
-        stopOnError="true"
-        stopOnFailure="true"
-        stopOnIncomplete="true"
-        stopOnRisky="true"
-        stopOnSkipped="true"
-        stopOnWarning="true"
-        testdox="true"
 >
     <coverage>
         <report>
