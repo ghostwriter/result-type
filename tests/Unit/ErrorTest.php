@@ -58,7 +58,7 @@ final class ErrorTest extends TestCase
 
     public function testAndThenThrow(): void
     {
-        $result = $this->error->andThen(static fn (): never => throw new RuntimeException());
+        $result = $this->error->andThen(static fn (): mixed => throw new RuntimeException());
 
         self::assertTrue($result->isError());
         self::assertSame($this->error, $result);
