@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Ghostwriter\Result;
 
-use Ghostwriter\Result\Contract\SuccessInterface;
-
 /**
  * Represents the result of successful operation.
  *
