@@ -51,7 +51,7 @@ final class SuccessTest extends TestCase
     public function testAndThenThrow(): void
     {
         $result = Success::create('foo')
-            ->andThen(static function(): mixed {
+            ->andThen(static function (): mixed {
                 throw new RuntimeException(__METHOD__);
             });
 
