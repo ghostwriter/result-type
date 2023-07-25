@@ -94,7 +94,7 @@ interface ErrorInterface extends ResultInterface
 
 ### `ResultInterface`
 ``` php
-use Ghostwriter\Option\Contract\OptionInterface;
+use Ghostwriter\Option\OptionInterface;
 use Throwable;
 
 /**
