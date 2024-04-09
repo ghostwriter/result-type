@@ -10,6 +10,8 @@ use Ghostwriter\Option\OptionInterface;
 use Ghostwriter\Result\Exception\ResultException;
 use Throwable;
 
+use function sprintf;
+
 /**
  * @template TValue
  *
