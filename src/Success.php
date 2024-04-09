@@ -13,7 +13,7 @@ namespace Ghostwriter\Result;
  *
  * @implements SuccessInterface<TValue>
  *
- * @see \Ghostwriter\Result\Tests\Unit\SuccessTest
+ * @see Tests\Unit\SuccessTest
  */
 final class Success extends AbstractResult implements SuccessInterface
 {
