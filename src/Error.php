@@ -15,7 +15,7 @@ use Throwable;
  *
  * @implements ErrorInterface<TValue>
  *
- * @see \Ghostwriter\Result\Tests\Unit\ErrorTest
+ * @see Tests\Unit\ErrorTest
  */
 final class Error extends AbstractResult implements ErrorInterface
 {
