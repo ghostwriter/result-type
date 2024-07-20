@@ -1,24 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.23.1@8471a896ccea3526b26d082f4461eeea467f10a4">
+<files psalm-version="5.25.0@01a8eb06b9e9cc6cfb6a320bf9fb14331919d505">
   <file src="src/AbstractResult.php">
-    <MissingOverrideAttribute>
-      <code><![CDATA[public function and(ResultInterface $result): ResultInterface]]></code>
-      <code><![CDATA[public function andThen(callable $function): ResultInterface]]></code>
-      <code><![CDATA[public function error(): OptionInterface]]></code>
-      <code><![CDATA[public function expect(Throwable $throwable): mixed]]></code>
-      <code><![CDATA[public function expectError(Throwable $throwable): Throwable]]></code>
-      <code><![CDATA[public function isError(): bool]]></code>
-      <code><![CDATA[public function isSuccess(): bool]]></code>
-      <code><![CDATA[public function map(callable $function): ResultInterface]]></code>
-      <code><![CDATA[public function mapError(callable $function): ResultInterface]]></code>
-      <code><![CDATA[public function or(ResultInterface $result): ResultInterface]]></code>
-      <code><![CDATA[public function orElse(callable $function): ResultInterface]]></code>
-      <code><![CDATA[public function success(): OptionInterface]]></code>
-      <code><![CDATA[public function unwrap(): mixed]]></code>
-      <code><![CDATA[public function unwrapError(): mixed]]></code>
-      <code><![CDATA[public function unwrapOr(mixed $fallback): mixed]]></code>
-      <code><![CDATA[public function unwrapOrElse(callable $function): mixed]]></code>
-    </MissingOverrideAttribute>
     <MissingThrowsDocblock>
       <code><![CDATA[throw new ResultException(
             sprintf('Invalid method call "unwrapError()" on a Result of type %s', static::class)
@@ -31,16 +13,6 @@
       <code><![CDATA[unwrap]]></code>
     </MissingThrowsDocblock>
   </file>
-  <file src="src/Error.php">
-    <MissingOverrideAttribute>
-      <code><![CDATA[public static function create(Throwable $throwable): self]]></code>
-    </MissingOverrideAttribute>
-  </file>
-  <file src="src/Success.php">
-    <MissingOverrideAttribute>
-      <code><![CDATA[public static function create(mixed $value): SuccessInterface]]></code>
-    </MissingOverrideAttribute>
-  </file>
   <file src="tests/Unit/ErrorTest.php">
     <DocblockTypeContradiction>
       <code><![CDATA[assertSame]]></code>
@@ -49,9 +21,6 @@
       <code><![CDATA[SuccessInterface]]></code>
       <code><![CDATA[bool]]></code>
     </LessSpecificReturnType>
-    <MissingOverrideAttribute>
-      <code><![CDATA[protected function setUp(): void]]></code>
-    </MissingOverrideAttribute>
   </file>
   <file src="tests/Unit/SuccessTest.php">
     <LessSpecificReturnType>
@@ -59,8 +28,5 @@
       <code><![CDATA[string]]></code>
       <code><![CDATA[string]]></code>
     </LessSpecificReturnType>
-    <MissingOverrideAttribute>
-      <code><![CDATA[protected function setUp(): void]]></code>
-    </MissingOverrideAttribute>
   </file>
 </files>
