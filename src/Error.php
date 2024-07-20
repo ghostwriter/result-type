@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ghostwriter\Result;
 
+use Override;
 use Throwable;
 
 /**
@@ -19,6 +20,7 @@ use Throwable;
  */
 final class Error extends AbstractResult implements ErrorInterface
 {
+    #[Override]
     public static function create(Throwable $throwable): self
     {
         return new self($throwable);
