@@ -12,6 +12,7 @@ use Ghostwriter\Result\ErrorInterface;
 use Ghostwriter\Result\Exception\ResultException;
 use Ghostwriter\Result\Success;
 use Ghostwriter\Result\SuccessInterface;
+use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
@@ -24,6 +25,7 @@ final class SuccessTest extends TestCase
 {
     private SuccessInterface $success;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->success = Success::create(42);
@@ -95,7 +97,7 @@ final class SuccessTest extends TestCase
         $this->success->expectError(new RuntimeException('oops!'));
     }
 
-    public function testisError(): void
+    public function testIsError(): void
     {
         self::assertFalse($this->success->isError());
     }
