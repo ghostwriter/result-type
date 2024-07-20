@@ -6,4 +6,6 @@ namespace Ghostwriter\Result;
 
 use Throwable;
 
-interface ExceptionInterface extends Throwable {}
+interface ExceptionInterface extends Throwable
+{
+}
