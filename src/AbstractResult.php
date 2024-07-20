@@ -8,6 +8,7 @@ use Ghostwriter\Option\None;
 use Ghostwriter\Option\Option;
 use Ghostwriter\Option\OptionInterface;
 use Ghostwriter\Result\Exception\ResultException;
+use Override;
 use Throwable;
 
 use function sprintf;
@@ -21,10 +22,8 @@ abstract class AbstractResult implements ResultInterface
 {
     /**
      * @var OptionInterface<TValue>
-     *
-     * @readonly
      */
-    private OptionInterface $option;
+    private readonly OptionInterface $option;
 
     /**
      * @param TValue $value
@@ -34,6 +33,7 @@ abstract class AbstractResult implements ResultInterface
         $this->option = Option::create($value);
     }
 
+    #[Override]
     public function and(ResultInterface $result): ResultInterface
     {
         if ($this instanceof ErrorInterface) {
@@ -43,6 +43,7 @@ abstract class AbstractResult implements ResultInterface
         return $result;
     }
 
+    #[Override]
     public function andThen(callable $function): ResultInterface
     {
         if ($this instanceof ErrorInterface) {
@@ -52,6 +53,7 @@ abstract class AbstractResult implements ResultInterface
         return $this->call($function);
     }
 
+    #[Override]
     public function error(): OptionInterface
     {
         if ($this instanceof ErrorInterface) {
@@ -61,6 +63,7 @@ abstract class AbstractResult implements ResultInterface
         return None::create();
     }
 
+    #[Override]
     public function expect(Throwable $throwable): mixed
     {
         if ($this instanceof ErrorInterface) {
@@ -70,6 +73,7 @@ abstract class AbstractResult implements ResultInterface
         return $this->option->unwrap();
     }
 
+    #[Override]
     public function expectError(Throwable $throwable): Throwable
     {
         if ($this instanceof SuccessInterface) {
@@ -82,16 +86,19 @@ abstract class AbstractResult implements ResultInterface
         return $throwable;
     }
 
+    #[Override]
     public function isError(): bool
     {
         return $this instanceof ErrorInterface;
     }
 
+    #[Override]
     public function isSuccess(): bool
     {
         return $this instanceof SuccessInterface;
     }
 
+    #[Override]
     public function map(callable $function): ResultInterface
     {
         if ($this instanceof ErrorInterface) {
@@ -101,6 +108,7 @@ abstract class AbstractResult implements ResultInterface
         return $this->call($function);
     }
 
+    #[Override]
     public function mapError(callable $function): ResultInterface
     {
         if ($this instanceof SuccessInterface) {
@@ -110,15 +118,7 @@ abstract class AbstractResult implements ResultInterface
         return $this->call($function);
     }
 
-    public static function of(mixed $value): ResultInterface
-    {
-        if ($value instanceof ResultInterface) {
-            return $value;
-        }
-
-        return $value instanceof Throwable ? Error::create($value) : Success::create($value);
-    }
-
+    #[Override]
     public function or(ResultInterface $result): ResultInterface
     {
         if ($this instanceof SuccessInterface) {
@@ -128,6 +128,7 @@ abstract class AbstractResult implements ResultInterface
         return $result;
     }
 
+    #[Override]
     public function orElse(callable $function): ResultInterface
     {
         if ($this instanceof SuccessInterface) {
@@ -137,6 +138,7 @@ abstract class AbstractResult implements ResultInterface
         return $this->call($function);
     }
 
+    #[Override]
     public function success(): OptionInterface
     {
         if ($this instanceof SuccessInterface) {
@@ -146,6 +148,7 @@ abstract class AbstractResult implements ResultInterface
         return None::create();
     }
 
+    #[Override]
     public function unwrap(): mixed
     {
         if ($this instanceof SuccessInterface) {
@@ -155,6 +158,7 @@ abstract class AbstractResult implements ResultInterface
         throw new ResultException(sprintf('Invalid method call "unwrap()" on a Result of type %s', static::class));
     }
 
+    #[Override]
     public function unwrapError(): mixed
     {
         if ($this instanceof ErrorInterface) {
@@ -166,6 +170,7 @@ abstract class AbstractResult implements ResultInterface
         );
     }
 
+    #[Override]
     public function unwrapOr(mixed $fallback): mixed
     {
         if ($this instanceof SuccessInterface) {
@@ -175,6 +180,7 @@ abstract class AbstractResult implements ResultInterface
         return $fallback;
     }
 
+    #[Override]
     public function unwrapOrElse(callable $function): mixed
     {
         if ($this instanceof SuccessInterface) {
@@ -200,5 +206,14 @@ abstract class AbstractResult implements ResultInterface
         } catch (Throwable $throwable) {
             return Error::create($throwable);
         }
+    }
+
+    public static function of(mixed $value): ResultInterface
+    {
+        if ($value instanceof ResultInterface) {
+            return $value;
+        }
+
+        return $value instanceof Throwable ? Error::create($value) : Success::create($value);
     }
 }
