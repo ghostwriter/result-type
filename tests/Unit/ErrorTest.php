@@ -13,6 +13,7 @@ use Ghostwriter\Result\ErrorInterface;
 use Ghostwriter\Result\Exception\ResultException;
 use Ghostwriter\Result\Success;
 use Ghostwriter\Result\SuccessInterface;
+use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
@@ -26,7 +27,7 @@ final class ErrorTest extends TestCase
     /**
      * @var string
      */
-    public const ERROR_MESSAGE = 'Testing error result.';
+    public const string ERROR_MESSAGE = 'Testing error result.';
 
     /**
      * @var ErrorInterface<Throwable>
@@ -35,6 +36,7 @@ final class ErrorTest extends TestCase
 
     private RuntimeException $runtimeException;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->runtimeException = new RuntimeException(self::ERROR_MESSAGE);
@@ -89,7 +91,7 @@ final class ErrorTest extends TestCase
         self::assertSame($this->runtimeException, $this->error->expectError(new RuntimeException('oops!')));
     }
 
-    public function testisError(): void
+    public function testIsError(): void
     {
         self::assertTrue($this->error->isError());
     }
