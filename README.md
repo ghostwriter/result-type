@@ -25,23 +25,23 @@ use Ghostwriter\Result\Error;
 use Ghostwriter\Result\Success;
 
 // --- Success ---
-$success = Success::create('Hello world!');
+$success = Success::new('Hello world!');
 $success->unwrap(); // 'Hello world!'
 
-// --- Error ---
-$error = Error::create(new ExampleException());
-$error->unwrap(); // throws: ResultException
-$error->unwrapOr('Fallback'); // 'Fallback'
-$error->unwrapError(); // returns: instance of ExampleException
+// --- Failure ---
+$failure = Failure::new(new ExampleException());
+$failure->unwrap(); // throws: ResultException
+$failure->unwrapOr('Fallback'); // 'Fallback'
+$failure->unwrapError(); // returns: instance of ExampleException
 
 // --- Example ---
 function divide(int $x, int $y): ResultInterface
 {
     if ($y === 0) {
-        return Error::create(new DivisionByZeroError);
+        return Failure::new(new DivisionByZeroError);
     }
 
-    return Success::create($x / $y);
+    return Success::new($x / $y);
 }
 
 divide(1, 0); // Error(DivisionByZeroError)
@@ -84,7 +84,7 @@ use Throwable;
 interface ErrorInterface extends ResultInterface
 {
     /**
-     * Create a new error value.
+     * Create a new failure value.
      *
      * @return self<Throwable>
      */
@@ -126,7 +126,7 @@ interface ResultInterface
     /**
      * Converts from Result<TValue> to Option<TValue>.
      */
-    public function error(): OptionInterface;
+    public function failure(): OptionInterface;
 
     /**
      * Unwraps a result, yielding the content of a Success.
