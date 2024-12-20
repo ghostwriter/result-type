@@ -1,26 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.25.0@01a8eb06b9e9cc6cfb6a320bf9fb14331919d505">
-  <file src="src/AbstractResult.php">
-    <MissingThrowsDocblock>
-      <code><![CDATA[throw new ResultException(
-            sprintf('Invalid method call "unwrapError()" on a Result of type %s', static::class)
-        );]]></code>
-      <code><![CDATA[throw new ResultException(sprintf('Invalid method call "unwrap()" on a Result of type %s', static::class));]]></code>
-      <code><![CDATA[unwrap]]></code>
-      <code><![CDATA[unwrap]]></code>
-      <code><![CDATA[unwrap]]></code>
-      <code><![CDATA[unwrap]]></code>
-      <code><![CDATA[unwrap]]></code>
-    </MissingThrowsDocblock>
+<files psalm-version="5.26.1@d747f6500b38ac4f7dfc5edbcae6e4b637d7add0">
+  <file src="src/Exception/ShouldNotHappenException.php">
+    <UnusedClass>
+      <code><![CDATA[ShouldNotHappenException]]></code>
+    </UnusedClass>
   </file>
-  <file src="tests/Unit/ErrorTest.php">
+  <file src="src/Failure.php">
+    <ArgumentTypeCoercion>
+      <code><![CDATA[$function]]></code>
+    </ArgumentTypeCoercion>
+    <InvalidReturnStatement>
+      <code><![CDATA[$this->option
+            ->map($function)
+            ->unwrap()]]></code>
+      <code><![CDATA[None::new()]]></code>
+    </InvalidReturnStatement>
+    <InvalidReturnType>
+      <code><![CDATA[OptionInterface]]></code>
+      <code><![CDATA[TGetOrElse]]></code>
+    </InvalidReturnType>
+    <UndefinedClass>
+      <code><![CDATA[Option]]></code>
+    </UndefinedClass>
+    <UnusedParam>
+      <code><![CDATA[$value]]></code>
+    </UnusedParam>
+  </file>
+  <file src="src/Result.php">
+    <MixedInferredReturnType>
+      <code><![CDATA[ResultInterface]]></code>
+    </MixedInferredReturnType>
+    <UndefinedDocblockClass>
+      <code><![CDATA[OptionInterface<TValue>]]></code>
+    </UndefinedDocblockClass>
+    <UnusedParam>
+      <code><![CDATA[$closure]]></code>
+      <code><![CDATA[$option]]></code>
+    </UnusedParam>
+  </file>
+  <file src="src/Success.php">
+    <InvalidArgument>
+      <code><![CDATA[$this->option]]></code>
+    </InvalidArgument>
+  </file>
+  <file src="tests/Unit/FailureTest.php">
     <DocblockTypeContradiction>
       <code><![CDATA[assertSame]]></code>
     </DocblockTypeContradiction>
     <LessSpecificReturnType>
-      <code><![CDATA[SuccessInterface]]></code>
       <code><![CDATA[bool]]></code>
     </LessSpecificReturnType>
+    <MixedArgument>
+      <code><![CDATA[SomeInterface::class]]></code>
+    </MixedArgument>
+    <UndefinedClass>
+      <code><![CDATA[SomeInterface]]></code>
+    </UndefinedClass>
   </file>
   <file src="tests/Unit/SuccessTest.php">
     <LessSpecificReturnType>
