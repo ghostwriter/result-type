@@ -4,33 +4,32 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0cf90a3beda7c44a98f76f3174e514b9",
+    "content-hash": "9f9d2429880b1499944426651a6c3460",
     "packages": [
         {
             "name": "ghostwriter/option",
-            "version": "1.5.2",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ghostwriter/option.git",
-                "reference": "da0a1e0a08e860edb196ade3624c1a3f33dc120e"
+                "reference": "126c6ef6a87d0256a4806c2ef4e8985741a07577"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ghostwriter/option/zipball/da0a1e0a08e860edb196ade3624c1a3f33dc120e",
-                "reference": "da0a1e0a08e860edb196ade3624c1a3f33dc120e",
+                "url": "https://api.github.com/repos/ghostwriter/option/zipball/126c6ef6a87d0256a4806c2ef4e8985741a07577",
+                "reference": "126c6ef6a87d0256a4806c2ef4e8985741a07577",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.3"
+                "php": ">=8.1,<8.4"
             },
             "require-dev": {
-                "ghostwriter/coding-standard": "dev-main",
-                "ghostwriter/psalm-plugin": "dev-main"
+                "ghostwriter/coding-standard": "dev-main"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Ghostwriter\\Option\\": "src"
+                    "Ghostwriter\\Option\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -52,9 +51,10 @@
                 "option"
             ],
             "support": {
+                "docs": "https://github.com/ghostwriter/option",
+                "forum": "https://github.com/ghostwriter/option/discussions",
                 "issues": "https://github.com/ghostwriter/option/issues",
                 "rss": "https://github.com/ghostwriter/option/releases.atom",
-                "security": "https://github.com/ghostwriter/option/security/advisories/new",
                 "source": "https://github.com/ghostwriter/option"
             },
             "funding": [
@@ -63,7 +63,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-12-20T15:45:15+00:00"
+            "time": "2023-07-05T19:51:28+00:00"
         }
     ],
     "packages-dev": [
@@ -4178,7 +4178,7 @@
     "platform": {
         "php": ">=8.3"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "8.3.999"
     },
