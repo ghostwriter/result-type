@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f8287caf5325c311653066c4e51e8a13",
+    "content-hash": "9f9d2429880b1499944426651a6c3460",
     "packages": [
         {
             "name": "ghostwriter/option",
@@ -69,16 +69,16 @@
     "packages-dev": [
         {
             "name": "composer/ca-bundle",
-            "version": "1.5.4",
+            "version": "1.5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/ca-bundle.git",
-                "reference": "bc0593537a463e55cadf45fd938d23b75095b7e1"
+                "reference": "08c50d5ec4c6ced7d0271d2862dec8c1033283e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/bc0593537a463e55cadf45fd938d23b75095b7e1",
-                "reference": "bc0593537a463e55cadf45fd938d23b75095b7e1",
+                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/08c50d5ec4c6ced7d0271d2862dec8c1033283e6",
+                "reference": "08c50d5ec4c6ced7d0271d2862dec8c1033283e6",
                 "shasum": ""
             },
             "require": {
@@ -125,7 +125,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/ca-bundle/issues",
-                "source": "https://github.com/composer/ca-bundle/tree/1.5.4"
+                "source": "https://github.com/composer/ca-bundle/tree/1.5.5"
             },
             "funding": [
                 {
@@ -141,7 +141,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-11-27T15:35:25+00:00"
+            "time": "2025-01-08T16:17:16+00:00"
         },
         {
             "name": "composer/class-map-generator",
@@ -795,12 +795,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ghostwriter/psalm-plugin.git",
-                "reference": "9e9ce43f5fba7d9e4ad15273d5053a85dbeb88ad"
+                "reference": "bffd0762547b19b7e76c0797985fa5b708defe46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ghostwriter/psalm-plugin/zipball/9e9ce43f5fba7d9e4ad15273d5053a85dbeb88ad",
-                "reference": "9e9ce43f5fba7d9e4ad15273d5053a85dbeb88ad",
+                "url": "https://api.github.com/repos/ghostwriter/psalm-plugin/zipball/bffd0762547b19b7e76c0797985fa5b708defe46",
+                "reference": "bffd0762547b19b7e76c0797985fa5b708defe46",
                 "shasum": ""
             },
             "require": {
@@ -812,9 +812,9 @@
             },
             "require-dev": {
                 "ghostwriter/coding-standard": "dev-main",
-                "ghostwriter/psalm-plugin-tester": "^0.2 || ^0.3 || ^1.0",
-                "psr/container": "^1.1 || ^2.0",
-                "vimeo/psalm": "^5.0 || ^6.0"
+                "ghostwriter/psalm-plugin-tester": "^0.2.1",
+                "psr/container": "^2.0.2",
+                "vimeo/psalm": "^5.26.1"
             },
             "default-branch": true,
             "type": "psalm-plugin",
@@ -862,7 +862,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-08-31T16:08:40+00:00"
+            "time": "2025-01-08T15:47:51+00:00"
         },
         {
             "name": "hamcrest/hamcrest-php",
