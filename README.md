@@ -2,9 +2,7 @@
 
 [![Automation](https://github.com/ghostwriter/result/actions/workflows/automation.yml/badge.svg)](https://github.com/ghostwriter/result/actions/workflows/automation.yml)
 [![Supported PHP Version](https://badgen.net/packagist/php/ghostwriter/result?color=8892bf)](https://www.php.net/supported-versions)
-[![Mutation Coverage](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fghostwriter%2Fresult%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/ghostwriter/result/main)
 [![Code Coverage](https://codecov.io/gh/ghostwriter/result/branch/main/graph/badge.svg?token=N89WKHZ3S9)](https://codecov.io/gh/ghostwriter/result)
-[![Latest Version on Packagist](https://badgen.net/packagist/v/ghostwriter/result)](https://packagist.org/packages/ghostwriter/result)
 [![Downloads](https://badgen.net/packagist/dt/ghostwriter/result?color=blue)](https://packagist.org/packages/ghostwriter/result)
 
 Provides a **`Result`** type implementation for PHP using [`ghostwriter/option`](https://github.com/ghostwriter/option)
