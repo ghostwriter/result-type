@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ghostwriter\Result;
+namespace Ghostwriter\Result\Interface;
 
 /**
  * @template TValue
@@ -20,5 +20,5 @@ interface SuccessInterface extends ResultInterface
      *
      * @return self<TSuccess>
      */
-    public static function create(mixed $value): self;
+    public static function new(mixed $value): self;
 }
