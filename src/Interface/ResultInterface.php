@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Ghostwriter\Result;
+namespace Ghostwriter\Result\Interface;
 
-use Ghostwriter\Option\OptionInterface;
+use Ghostwriter\Option\Interface\OptionInterface;
 use Throwable;
 
 /**
- * @template TValue
+ * @template TResult
  */
 interface ResultInterface
 {
@@ -28,35 +28,72 @@ interface ResultInterface
      *
      * @template TNewValue
      *
-     * @param callable(TValue):TNewValue $function
+     * @param callable(TResult):TNewValue $function
      *
-     * @return self<TValue>
+     * @return self<TResult>
      */
     public function andThen(callable $function): self;
 
     /**
-     * Converts from Result<TValue> to Option<TValue>.
-     */
-    public function error(): OptionInterface;
-
-    /**
-     * Unwraps a result, yielding the content of a Success.
+     * Gets a result, yielding the content of a Success.
      *
      * @throws Throwable
      */
     public function expect(Throwable $throwable): mixed;
 
     /**
-     * Unwraps a result, yielding the content of an Error.
+     * Gets a result, yielding the content of an Error.
      *
      * @throws Throwable
      */
     public function expectError(Throwable $throwable): Throwable;
 
     /**
+     * Converts from Result<TResult> to Option<TResult>.
+     */
+    public function failure(): OptionInterface;
+
+    /**
+     * Gets a result, yielding the content of a Success.
+     *
+     * @return TResult
+     */
+    public function get(): mixed;
+
+    /**
+     * Gets a result, yielding the content of an Error.
+     *
+     * @return TResult
+     */
+    public function getError(): mixed;
+
+    /**
+     * Gets a result, yielding the content of a Success. Else, it returns $fallback.
+     *
+     * @template TUnwrapOr
+     *
+     * @param TUnwrapOr $fallback
+     *
+     * @return TResult|TUnwrapOr
+     */
+    public function getOr(mixed $fallback): mixed;
+
+    /**
+     * Gets a result, yielding the content of a Success. If the value is an Error then it calls $function with its
+     * value.
+     *
+     * @template TUnwrapOrElse
+     *
+     * @param callable(TResult):TUnwrapOrElse $function
+     *
+     * @return TResult|TUnwrapOrElse
+     */
+    public function getOrElse(callable $function): mixed;
+
+    /**
      * Returns true if the result is Error.
      */
-    public function isError(): bool;
+    public function isFailure(): bool;
 
     /**
      * Returns true if the result is Success.
@@ -69,7 +106,7 @@ interface ResultInterface
      *
      * @template TMap
      *
-     * @param callable(TValue):TMap $function
+     * @param callable(TResult):TMap $function
      *
      * @return self<TMap>
      */
@@ -81,9 +118,9 @@ interface ResultInterface
      *
      * @template TMapError
      *
-     * @param callable(TValue):TMapError $function
+     * @param callable(TResult):TMapError $function
      *
-     * @return self<TMapError|TValue>
+     * @return self<TMapError|TResult>
      */
     public function mapError(callable $function): self;
 
@@ -97,53 +134,16 @@ interface ResultInterface
      *
      * @template TOrElse
      *
-     * @param callable(TValue):TOrElse $function
+     * @param callable(TResult):TOrElse $function
      *
-     * @return self<TOrElse|TValue>
+     * @return self<TOrElse|TResult>
      */
     public function orElse(callable $function): self;
 
     /**
-     * Converts from Result<TValue> to Option<TValue>.
+     * Converts from Result<TResult> to Option<TResult>.
      *
-     * @return OptionInterface<TValue>
+     * @return OptionInterface<TResult>
      */
     public function success(): OptionInterface;
-
-    /**
-     * Unwraps a result, yielding the content of a Success.
-     *
-     * @return TValue
-     */
-    public function unwrap(): mixed;
-
-    /**
-     * Unwraps a result, yielding the content of an Error.
-     *
-     * @return TValue
-     */
-    public function unwrapError(): mixed;
-
-    /**
-     * Unwraps a result, yielding the content of a Success. Else, it returns $fallback.
-     *
-     * @template TUnwrapOr
-     *
-     * @param TUnwrapOr $fallback
-     *
-     * @return TUnwrapOr|TValue
-     */
-    public function unwrapOr(mixed $fallback): mixed;
-
-    /**
-     * Unwraps a result, yielding the content of a Success. If the value is an Error then it calls $function with its
-     * value.
-     *
-     * @template TUnwrapOrElse
-     *
-     * @param callable(TValue):TUnwrapOrElse $function
-     *
-     * @return TUnwrapOrElse|TValue
-     */
-    public function unwrapOrElse(callable $function): mixed;
 }
