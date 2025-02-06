@@ -5,6 +5,6 @@ declare(strict_types=1);
 namespace Ghostwriter\Result\Exception;
 
 use Ghostwriter\Result\Interface\ExceptionInterface;
-use RuntimeException;
+use LogicException;
 
-final class ResultException extends RuntimeException implements ExceptionInterface {}
+final class ShouldNotHappenException extends LogicException implements ExceptionInterface {}

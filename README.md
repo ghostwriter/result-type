@@ -1,11 +1,8 @@
 # Result
 
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/ghostwriter?label=Sponsor+@ghostwriter/result&logo=GitHub+Sponsors)](https://github.com/sponsors/ghostwriter)
 [![Automation](https://github.com/ghostwriter/result/actions/workflows/automation.yml/badge.svg)](https://github.com/ghostwriter/result/actions/workflows/automation.yml)
 [![Supported PHP Version](https://badgen.net/packagist/php/ghostwriter/result?color=8892bf)](https://www.php.net/supported-versions)
-[![Mutation Coverage](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fghostwriter%2Fresult%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/ghostwriter/result/main)
-[![Code Coverage](https://codecov.io/gh/ghostwriter/result/branch/main/graph/badge.svg?token=N89WKHZ3S9)](https://codecov.io/gh/ghostwriter/result)
-[![Type Coverage](https://shepherd.dev/github/ghostwriter/result/coverage.svg)](https://shepherd.dev/github/ghostwriter/result)
-[![Latest Version on Packagist](https://badgen.net/packagist/v/ghostwriter/result)](https://packagist.org/packages/ghostwriter/result)
 [![Downloads](https://badgen.net/packagist/dt/ghostwriter/result?color=blue)](https://packagist.org/packages/ghostwriter/result)
 
 Provides a **`Result`** type implementation for PHP using [`ghostwriter/option`](https://github.com/ghostwriter/option)
@@ -25,23 +22,23 @@ use Ghostwriter\Result\Error;
 use Ghostwriter\Result\Success;
 
 // --- Success ---
-$success = Success::create('Hello world!');
+$success = Success::new('Hello world!');
 $success->unwrap(); // 'Hello world!'
 
-// --- Error ---
-$error = Error::create(new ExampleException());
-$error->unwrap(); // throws: ResultException
-$error->unwrapOr('Fallback'); // 'Fallback'
-$error->unwrapError(); // returns: instance of ExampleException
+// --- Failure ---
+$failure = Failure::new(new ExampleException());
+$failure->unwrap(); // throws: ResultException
+$failure->unwrapOr('Fallback'); // 'Fallback'
+$failure->unwrapError(); // returns: instance of ExampleException
 
 // --- Example ---
 function divide(int $x, int $y): ResultInterface
 {
     if ($y === 0) {
-        return Error::create(new DivisionByZeroError);
+        return Failure::new(new DivisionByZeroError);
     }
 
-    return Success::create($x / $y);
+    return Success::new($x / $y);
 }
 
 divide(1, 0); // Error(DivisionByZeroError)
@@ -84,7 +81,7 @@ use Throwable;
 interface ErrorInterface extends ResultInterface
 {
     /**
-     * Create a new error value.
+     * Create a new failure value.
      *
      * @return self<Throwable>
      */
@@ -126,7 +123,7 @@ interface ResultInterface
     /**
      * Converts from Result<TValue> to Option<TValue>.
      */
-    public function error(): OptionInterface;
+    public function failure(): OptionInterface;
 
     /**
      * Unwraps a result, yielding the content of a Success.
