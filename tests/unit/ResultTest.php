@@ -9,12 +9,13 @@ use Ghostwriter\Result\Interface\SuccessInterface;
 use Ghostwriter\Result\Result;
 use Ghostwriter\Result\Success;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\UsesClass;
 use Throwable;
 
+use function str_repeat;
+
 #[CoversClass(Result::class)]
-#[UsesClass(Failure::class)]
-#[UsesClass(Success::class)]
+#[CoversClass(Failure::class)]
+#[CoversClass(Success::class)]
 final class ResultTest extends AbstractTestCase
 {
     /**
@@ -48,13 +49,34 @@ final class ResultTest extends AbstractTestCase
     /**
      * @throws Throwable
      */
+    public function testResult(): void
+    {
+        $result = Result::new(self::MESSAGE);
+
+        self::assertTrue($result->isSuccess());
+        self::assertSame(self::MESSAGE, $result->get());
+
+        $result1 = Result::new($result);
+
+        self::assertTrue($result1->isSuccess());
+        self::assertSame($result, $result1);
+        self::assertSame(self::MESSAGE, $result1->get());
+
+        $result = Result::new($this->runtimeException);
+        self::assertTrue($result->isFailure());
+        self::assertSame(self::MESSAGE, $result->get());
+    }
+
+    /**
+     * @throws Throwable
+     */
     public function testSuccessAndThen(): void
     {
-        $result = $this->success->andThen(static fn (int $value): string => $value . 'bar');
+        $result = $this->success->andThen(static fn (string $value): string => $value . self::MESSAGE);
 
         self::assertTrue($result->isSuccess());
 
-        self::assertSame('42bar', $result->get());
+        self::assertSame(self::MESSAGE . self::MESSAGE, $result->get());
     }
 
     /**
@@ -63,12 +85,14 @@ final class ResultTest extends AbstractTestCase
     public function testSuccessMap(): void
     {
         $result = $this->success->map(static fn (mixed $x): mixed => $x);
+
         self::assertTrue($result->isSuccess());
         self::assertNotSame($this->success, $result);
 
-        $mapped = $this->success->map(static fn (mixed $x): int => (int) $x * 100);
+        $mapped = $this->success->map(static fn (mixed $x): string => str_repeat($x, 2));
+
         self::assertTrue($mapped->isSuccess());
         self::assertNotSame($this->success, $mapped);
-        self::assertSame(4200, $mapped->get());
+        self::assertSame(self::MESSAGE . self::MESSAGE, $mapped->get());
     }
 }
