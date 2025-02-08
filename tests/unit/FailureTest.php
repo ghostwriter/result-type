@@ -14,13 +14,12 @@ use Ghostwriter\Result\Interface\SuccessInterface;
 use Ghostwriter\Result\Result;
 use Ghostwriter\Result\Success;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\UsesClass;
 use RuntimeException;
 use Throwable;
 
 #[CoversClass(Failure::class)]
-#[UsesClass(Result::class)]
-#[UsesClass(Success::class)]
+#[CoversClass(Result::class)]
+#[CoversClass(Success::class)]
 final class FailureTest extends AbstractTestCase
 {
     /**
@@ -28,8 +27,7 @@ final class FailureTest extends AbstractTestCase
      */
     public function testAnd(): void
     {
-        $success = Success::of('foobar');
-        $result = $this->failure->and($success);
+        $result = $this->failure->and($this->success);
 
         self::assertTrue($result->isFailure());
     }
@@ -81,6 +79,7 @@ final class FailureTest extends AbstractTestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('oops!');
+
         $this->failure->expect(new RuntimeException('oops!'));
     }
 
@@ -99,6 +98,7 @@ final class FailureTest extends AbstractTestCase
     {
         $this->expectException(ResultException::class);
         $this->expectExceptionMessage('get');
+
         $this->failure->get();
     }
 
@@ -180,12 +180,11 @@ final class FailureTest extends AbstractTestCase
      */
     public function testOr(): void
     {
-        $success = Success::new('foobar');
-        $result = $this->failure->or($success);
+        $result = $this->failure->or($this->success);
 
         self::assertTrue($result->isSuccess());
-        self::assertSame($success, $result);
-        self::assertSame('foobar', $result->get());
+        self::assertSame($this->success, $result);
+        self::assertSame(self::MESSAGE, $result->get());
     }
 
     /**
@@ -193,19 +192,18 @@ final class FailureTest extends AbstractTestCase
      */
     public function testOrElse(): void
     {
-        /** @var SuccessInterface $success */
-        $success = Success::new('foobar');
+        $success = $this->success;
 
         /**
-         * @var Closure(): SuccessInterface $orElse
+         * @var Closure():SuccessInterface<string> $orElse
          */
         $orElse = static fn (): SuccessInterface => $success;
 
         $result = $this->failure->orElse($orElse);
 
         self::assertTrue($result->isSuccess());
-        self::assertSame($success, $result);
-        self::assertSame('foobar', $result->get());
+        self::assertSame($this->success, $result);
+        self::assertSame(self::MESSAGE, $result->get());
     }
 
     /**
