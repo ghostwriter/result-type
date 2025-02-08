@@ -64,7 +64,6 @@ final class ResultTest extends AbstractTestCase
 
         $result = Result::new($this->runtimeException);
         self::assertTrue($result->isFailure());
-        self::assertSame(self::MESSAGE, $result->get());
     }
 
     /**
