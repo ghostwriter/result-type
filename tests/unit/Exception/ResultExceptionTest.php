@@ -8,13 +8,12 @@ use Ghostwriter\Result\Exception\ResultException;
 use Ghostwriter\Result\Failure;
 use Ghostwriter\Result\Success;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\UsesClass;
 use Tests\Unit\AbstractTestCase;
 use Throwable;
 
 #[CoversClass(ResultException::class)]
-#[UsesClass(Failure::class)]
-#[UsesClass(Success::class)]
+#[CoversClass(Failure::class)]
+#[CoversClass(Success::class)]
 final class ResultExceptionTest extends AbstractTestCase
 {
     /**
