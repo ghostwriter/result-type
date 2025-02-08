@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Ghostwriter\Result;
 
-use Ghostwriter\Option\Interface\OptionInterface;
+use Ghostwriter\Option\Interface\NoneInterface;
+use Ghostwriter\Option\Interface\SomeInterface;
 use Ghostwriter\Option\None;
 use Ghostwriter\Option\Some;
 use Ghostwriter\Result\Exception\ResultException;
@@ -28,29 +29,18 @@ use function sprintf;
 final readonly class Failure implements FailureInterface
 {
     /**
-     * @var OptionInterface<TFailure>
+     * @var SomeInterface<TFailure>
      */
-    private OptionInterface $option;
+    private SomeInterface $some;
 
     /**
-     * @param TFailure $value
-     *
-     * @throws Throwable
+     * @param TFailure $throwable
      */
-    private function __construct(Throwable $value)
+    private function __construct(Throwable $throwable)
     {
-        $this->option = Some::new($value);
+        $this->some = Some::new($throwable);
     }
 
-    /**
-     * @template TNewFailure of Throwable
-     *
-     * @param TNewFailure $throwable
-     *
-     * @throws Throwable
-     *
-     * @return self<TNewFailure>
-     */
     #[Override]
     public static function new(Throwable $throwable): FailureInterface
     {
@@ -63,13 +53,6 @@ final readonly class Failure implements FailureInterface
         return $this;
     }
 
-    /**
-     * Calls $function if the result is Success, otherwise returns the Error value of self.
-     *
-     * @template TNewValue
-     *
-     * @param callable(TFailure):TNewValue $function
-     */
     #[Override]
     public function andThen(callable $function): self
     {
@@ -85,18 +68,19 @@ final readonly class Failure implements FailureInterface
     #[Override]
     public function expectError(Throwable $throwable): Throwable
     {
-        /** @var Throwable $throwableUnwrapped */
-        return $this->option->unwrap();
+        return $this->some->get();
     }
 
     #[Override]
-    public function failure(): OptionInterface
+    public function failure(): SomeInterface
     {
-        return $this->option;
+        return $this->some;
     }
 
     /**
      * @throws Throwable
+     *
+     * @return never
      */
     #[Override]
     public function get(): mixed
@@ -109,44 +93,26 @@ final readonly class Failure implements FailureInterface
     }
 
     /**
-     * @throws Throwable
-     *
      * @return TFailure
      */
     #[Override]
     public function getError(): mixed
     {
-        return $this->option->unwrap();
+        return $this->some->get();
     }
 
-    /**
-     * @template TFallback
-     *
-     * @param TFallback $fallback
-     *
-     * @return TFallback
-     */
     #[Override]
     public function getOr(mixed $fallback): mixed
     {
         return $fallback;
     }
 
-    /**
-     * @template TGetOrElse
-     *
-     * @param callable(TFailure):TGetOrElse $function
-     *
-     * @throws Throwable
-     *
-     * @return TGetOrElse
-     */
     #[Override]
     public function getOrElse(callable $function): mixed
     {
-        return $this->option
+        return $this->some
             ->map($function)
-            ->unwrap();
+            ->get();
     }
 
     #[Override]
@@ -167,13 +133,10 @@ final readonly class Failure implements FailureInterface
         return $this;
     }
 
-    /**
-     * @throws Throwable
-     */
     #[Override]
     public function mapError(callable $function): ResultInterface
     {
-        return Result::call($function, $this->option);
+        return Result::call($function, $this->some);
     }
 
     #[Override]
@@ -182,38 +145,15 @@ final readonly class Failure implements FailureInterface
         return $result;
     }
 
-    /**
-     * @throws Throwable
-     */
     #[Override]
     public function orElse(callable $function): ResultInterface
     {
-        return Result::call($function, $this->option);
+        return Result::call($function, $this->some);
     }
 
     #[Override]
-    public function success(): OptionInterface
+    public function success(): NoneInterface
     {
         return None::new();
     }
-
-    //    /**
-    //     * @template TNewValue
-    //     *
-    //     * @param callable(TFailure):TNewValue $function
-    //     */
-    //    private function call(callable $function): ResultInterface
-    //    {
-    //        $option = $this->option;
-    //
-    //        return Result::wrap(
-    //            static function () use ($function, $option) {
-    //                try {
-    //                    return $function($option->unwrap());
-    //                } catch (Throwable $throwable) {
-    //                    return $throwable;
-    //                }
-    //            }
-    //        );
-    //    }
 }
