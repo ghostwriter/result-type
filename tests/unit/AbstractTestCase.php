@@ -21,6 +21,9 @@ abstract class AbstractTestCase extends TestCase
 
     protected RuntimeException $runtimeException;
 
+    /**
+     * @var SuccessInterface<string>
+     */
     protected SuccessInterface $success;
 
     /**
@@ -35,6 +38,6 @@ abstract class AbstractTestCase extends TestCase
 
         $this->failure = Failure::new($this->runtimeException);
 
-        $this->success = Success::new(42);
+        $this->success = Success::new(self::MESSAGE);
     }
 }
