@@ -35,12 +35,17 @@ final readonly class Failure implements FailureInterface
 
     /**
      * @param TFailure $throwable
+     *
+     * @throws Throwable
      */
     private function __construct(Throwable $throwable)
     {
         $this->some = Some::new($throwable);
     }
 
+    /**
+     * @throws Throwable
+     */
     #[Override]
     public static function new(Throwable $throwable): FailureInterface
     {
@@ -59,12 +64,18 @@ final readonly class Failure implements FailureInterface
         return $this;
     }
 
+    /**
+     * @throws Throwable
+     */
     #[Override]
     public function expect(Throwable $throwable): mixed
     {
         throw $throwable;
     }
 
+    /**
+     * @throws Throwable
+     */
     #[Override]
     public function expectError(Throwable $throwable): Throwable
     {
@@ -93,6 +104,8 @@ final readonly class Failure implements FailureInterface
     }
 
     /**
+     * @throws Throwable
+     *
      * @return TFailure
      */
     #[Override]
@@ -107,6 +120,9 @@ final readonly class Failure implements FailureInterface
         return $fallback;
     }
 
+    /**
+     * @throws Throwable
+     */
     #[Override]
     public function getOrElse(callable $function): mixed
     {
@@ -133,6 +149,9 @@ final readonly class Failure implements FailureInterface
         return $this;
     }
 
+    /**
+     * @throws Throwable
+     */
     #[Override]
     public function mapError(callable $function): ResultInterface
     {
@@ -145,6 +164,9 @@ final readonly class Failure implements FailureInterface
         return $result;
     }
 
+    /**
+     * @throws Throwable
+     */
     #[Override]
     public function orElse(callable $function): ResultInterface
     {
