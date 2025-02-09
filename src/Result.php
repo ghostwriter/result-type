@@ -17,6 +17,8 @@ final readonly class Result
      *
      * @param Throwable|TValue $value
      *
+     * @throws Throwable
+     *
      * @return ResultInterface<TValue>
      */
     public static function new(mixed $value): ResultInterface
@@ -34,6 +36,8 @@ final readonly class Result
      * @param callable(TValue):ResultInterface<TValue> $closure
      * @param SomeInterface<TValue>                    $option
      *
+     * @throws Throwable
+     *
      * @return ResultInterface<TValue>
      */
     public static function call(callable $closure, SomeInterface $option): ResultInterface
@@ -45,6 +49,9 @@ final readonly class Result
         }
     }
 
+    /**
+     * @throws Throwable
+     */
     public static function failure(Throwable $throwable): FailureInterface
     {
         return Failure::new($throwable);
@@ -54,6 +61,8 @@ final readonly class Result
      * @template TValue
      *
      * @param TValue $value
+     *
+     * @throws Throwable
      *
      * @return SuccessInterface<TValue>
      */
