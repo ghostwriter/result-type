@@ -35,12 +35,17 @@ final readonly class Success implements SuccessInterface
 
     /**
      * @param TValue $value
+     *
+     * @throws Throwable
      */
     private function __construct(mixed $value)
     {
         $this->some = Some::new($value);
     }
 
+    /**
+     * @throws Throwable
+     */
     #[Override]
     public static function new(mixed $value): SuccessInterface
     {
@@ -53,18 +58,27 @@ final readonly class Success implements SuccessInterface
         return $result;
     }
 
+    /**
+     * @throws Throwable
+     */
     #[Override]
     public function andThen(callable $function): ResultInterface
     {
         return Result::call($function, $this->some);
     }
 
+    /**
+     * @throws Throwable
+     */
     #[Override]
     public function expect(Throwable $throwable): mixed
     {
         return $this->some->get();
     }
 
+    /**
+     * @throws Throwable
+     */
     #[Override]
     public function expectError(Throwable $throwable): Throwable
     {
@@ -77,6 +91,9 @@ final readonly class Success implements SuccessInterface
         return None::new();
     }
 
+    /**
+     * @throws Throwable
+     */
     #[Override]
     public function get(): mixed
     {
@@ -98,12 +115,18 @@ final readonly class Success implements SuccessInterface
         ));
     }
 
+    /**
+     * @throws Throwable
+     */
     #[Override]
     public function getOr(mixed $fallback): mixed
     {
         return $this->some->get();
     }
 
+    /**
+     * @throws Throwable
+     */
     #[Override]
     public function getOrElse(callable $function): mixed
     {
@@ -122,6 +145,9 @@ final readonly class Success implements SuccessInterface
         return true;
     }
 
+    /**
+     * @throws Throwable
+     */
     #[Override]
     public function map(callable $function): ResultInterface
     {
