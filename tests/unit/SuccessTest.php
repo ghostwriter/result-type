@@ -13,9 +13,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use RuntimeException;
 use Throwable;
 
-#[CoversClass(Success::class)]
 #[CoversClass(Failure::class)]
 #[CoversClass(Result::class)]
+#[CoversClass(Success::class)]
 final class SuccessTest extends AbstractTestCase
 {
     /**
