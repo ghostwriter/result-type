@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use Closure;
-use Ghostwriter\Option\Interface\SomeInterface;
-use Ghostwriter\Option\None;
-use Ghostwriter\Option\Some;
 use Ghostwriter\Result\Exception\ResultException;
 use Ghostwriter\Result\Failure;
 use Ghostwriter\Result\Interface\SuccessInterface;
@@ -67,20 +64,12 @@ final class FailureTest extends AbstractTestCase
     /**
      * @throws Throwable
      */
-    public function testError(): void
-    {
-        self::assertInstanceOf(Some::class, $this->failure->failure());
-    }
-
-    /**
-     * @throws Throwable
-     */
     public function testExpect(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('oops!');
+        $this->expectExceptionMessage(self::MESSAGE);
 
-        $this->failure->expect(new RuntimeException('oops!'));
+        $this->failure->expect($this->runtimeException);
     }
 
     /**
@@ -123,14 +112,7 @@ final class FailureTest extends AbstractTestCase
      */
     public function testGetOrElse(): void
     {
-        $fn = static fn (): bool
-            /**
-             * @var bool
-             */
-            => true;
-
-        self::assertInstanceOf(SomeInterface::class, $this->failure->failure());
-        self::assertTrue($this->failure->getOrElse($fn));
+        self::assertTrue($this->failure->getOrElse(static fn (): bool => true));
     }
 
     /**
@@ -194,23 +176,10 @@ final class FailureTest extends AbstractTestCase
     {
         $success = $this->success;
 
-        /**
-         * @var Closure():SuccessInterface<string> $orElse
-         */
-        $orElse = static fn (): SuccessInterface => $success;
-
-        $result = $this->failure->orElse($orElse);
+        $result = $this->failure->orElse(static fn (): SuccessInterface => $success);
 
         self::assertTrue($result->isSuccess());
         self::assertSame($this->success, $result);
         self::assertSame(self::MESSAGE, $result->get());
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function testSuccess(): void
-    {
-        self::assertInstanceOf(None::class, $this->failure->success());
     }
 }
