@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use Ghostwriter\Option\None;
-use Ghostwriter\Option\Some;
 use Ghostwriter\Result\Exception\ResultException;
 use Ghostwriter\Result\Failure;
 use Ghostwriter\Result\Interface\FailureInterface;
@@ -29,8 +27,6 @@ final class SuccessTest extends AbstractTestCase
 
         self::assertSame($success, $this->success->and($success));
         self::assertTrue($success->isSuccess());
-        self::assertTrue($success->success()->isSome());
-        self::assertTrue($success->failure()->isNone());
         self::assertTrue($success->get());
     }
 
@@ -72,18 +68,6 @@ final class SuccessTest extends AbstractTestCase
     /**
      * @throws Throwable
      */
-    public function testError(): void
-    {
-        self::assertSame(self::MESSAGE, $this->success->get());
-
-        self::assertTrue($this->success->isSuccess());
-
-        self::assertInstanceOf(None::class, $this->success->failure());
-    }
-
-    /**
-     * @throws Throwable
-     */
     public function testExpect(): void
     {
         $runtimeException = new RuntimeException('oops!');
@@ -97,6 +81,7 @@ final class SuccessTest extends AbstractTestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('oops!');
+
         $this->success->expectError(new RuntimeException('oops!'));
     }
 
@@ -140,6 +125,14 @@ final class SuccessTest extends AbstractTestCase
      * @throws Throwable
      */
     public function testIsError(): void
+    {
+        self::assertFalse($this->success->isFailure());
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testIsFailure(): void
     {
         self::assertFalse($this->success->isFailure());
     }
@@ -203,13 +196,5 @@ final class SuccessTest extends AbstractTestCase
 
         self::assertTrue($result->isSuccess());
         self::assertSame(self::MESSAGE, $result->get());
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function testSuccess(): void
-    {
-        self::assertInstanceOf(Some::class, $this->success->success());
     }
 }
