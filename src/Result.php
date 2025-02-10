@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Ghostwriter\Result;
 
-use Closure;
-use Ghostwriter\Option\Interface\NoneInterface;
-use Ghostwriter\Option\Interface\OptionInterface;
+use Ghostwriter\Option\Interface\SomeInterface;
 use Ghostwriter\Result\Interface\FailureInterface;
 use Ghostwriter\Result\Interface\ResultInterface;
 use Ghostwriter\Result\Interface\SuccessInterface;
@@ -15,7 +13,13 @@ use Throwable;
 final readonly class Result
 {
     /**
+     * @template TValue
+     *
+     * @param Throwable|TValue $value
+     *
      * @throws Throwable
+     *
+     * @return ResultInterface<TValue>
      */
     public static function new(mixed $value): ResultInterface
     {
@@ -29,26 +33,20 @@ final readonly class Result
     /**
      * @template TValue
      *
-     * @param OptionInterface<TValue> $option
+     * @param callable(TValue):ResultInterface<TValue> $closure
+     * @param SomeInterface<TValue>                    $some
      *
      * @throws Throwable
+     *
+     * @return ResultInterface<TValue>
      */
-    public static function call(callable $closure, OptionInterface $option): ResultInterface
+    public static function call(callable $closure, SomeInterface $some): ResultInterface
     {
-        if ($option instanceof NoneInterface) {
-            // / @phpstan-ignore-next-line
-            return self::failure(new RuntimeException('Option is None'));
+        try {
+            return self::new($closure($some->get()));
+        } catch (Throwable $throwable) {
+            return self::failure($throwable);
         }
-
-        return self::wrap(
-            static function () use ($closure, $option) {
-                try {
-                    return $closure($option->unwrap());
-                } catch (Throwable $throwable) {
-                    return $throwable;
-                }
-            }
-        );
     }
 
     /**
@@ -60,22 +58,16 @@ final readonly class Result
     }
 
     /**
+     * @template TValue
+     *
+     * @param TValue $value
+     *
      * @throws Throwable
+     *
+     * @return SuccessInterface<TValue>
      */
-    public static function success(mixed $result): SuccessInterface
+    public static function success(mixed $value): SuccessInterface
     {
-        return Success::new($result);
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public static function wrap(Closure $closure): ResultInterface
-    {
-        try {
-            return self::new($closure());
-        } catch (Throwable $throwable) {
-            return self::failure($throwable);
-        }
+        return Success::new($value);
     }
 }

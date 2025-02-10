@@ -6,15 +6,16 @@ namespace Tests\Unit\Exception;
 
 use Ghostwriter\Result\Exception\ResultException;
 use Ghostwriter\Result\Failure;
+use Ghostwriter\Result\Result;
 use Ghostwriter\Result\Success;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\UsesClass;
 use Tests\Unit\AbstractTestCase;
 use Throwable;
 
+#[CoversClass(Failure::class)]
+#[CoversClass(Result::class)]
 #[CoversClass(ResultException::class)]
-#[UsesClass(Failure::class)]
-#[UsesClass(Success::class)]
+#[CoversClass(Success::class)]
 final class ResultExceptionTest extends AbstractTestCase
 {
     /**

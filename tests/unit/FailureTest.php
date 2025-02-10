@@ -5,22 +5,18 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use Closure;
-use Ghostwriter\Option\Interface\SomeInterface;
-use Ghostwriter\Option\None;
-use Ghostwriter\Option\Some;
 use Ghostwriter\Result\Exception\ResultException;
 use Ghostwriter\Result\Failure;
 use Ghostwriter\Result\Interface\SuccessInterface;
 use Ghostwriter\Result\Result;
 use Ghostwriter\Result\Success;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\UsesClass;
 use RuntimeException;
 use Throwable;
 
 #[CoversClass(Failure::class)]
-#[UsesClass(Result::class)]
-#[UsesClass(Success::class)]
+#[CoversClass(Result::class)]
+#[CoversClass(Success::class)]
 final class FailureTest extends AbstractTestCase
 {
     /**
@@ -28,8 +24,7 @@ final class FailureTest extends AbstractTestCase
      */
     public function testAnd(): void
     {
-        $success = Success::of('foobar');
-        $result = $this->failure->and($success);
+        $result = $this->failure->and($this->success);
 
         self::assertTrue($result->isFailure());
     }
@@ -69,19 +64,12 @@ final class FailureTest extends AbstractTestCase
     /**
      * @throws Throwable
      */
-    public function testError(): void
-    {
-        self::assertInstanceOf(Some::class, $this->failure->failure());
-    }
-
-    /**
-     * @throws Throwable
-     */
     public function testExpect(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('oops!');
-        $this->failure->expect(new RuntimeException('oops!'));
+        $this->expectExceptionMessage(self::MESSAGE);
+
+        $this->failure->expect($this->runtimeException);
     }
 
     /**
@@ -99,6 +87,7 @@ final class FailureTest extends AbstractTestCase
     {
         $this->expectException(ResultException::class);
         $this->expectExceptionMessage('get');
+
         $this->failure->get();
     }
 
@@ -123,14 +112,7 @@ final class FailureTest extends AbstractTestCase
      */
     public function testGetOrElse(): void
     {
-        $fn = static fn (): bool
-            /**
-             * @var bool
-             */
-            => true;
-
-        self::assertInstanceOf(SomeInterface::class, $this->failure->failure());
-        self::assertTrue($this->failure->getOrElse($fn));
+        self::assertTrue($this->failure->getOrElse(static fn (): bool => true));
     }
 
     /**
@@ -180,12 +162,11 @@ final class FailureTest extends AbstractTestCase
      */
     public function testOr(): void
     {
-        $success = Success::new('foobar');
-        $result = $this->failure->or($success);
+        $result = $this->failure->or($this->success);
 
         self::assertTrue($result->isSuccess());
-        self::assertSame($success, $result);
-        self::assertSame('foobar', $result->get());
+        self::assertSame($this->success, $result);
+        self::assertSame(self::MESSAGE, $result->get());
     }
 
     /**
@@ -193,26 +174,12 @@ final class FailureTest extends AbstractTestCase
      */
     public function testOrElse(): void
     {
-        /** @var SuccessInterface $success */
-        $success = Success::new('foobar');
+        $success = $this->success;
 
-        /**
-         * @var Closure(): SuccessInterface $orElse
-         */
-        $orElse = static fn (): SuccessInterface => $success;
-
-        $result = $this->failure->orElse($orElse);
+        $result = $this->failure->orElse(static fn (): SuccessInterface => $success);
 
         self::assertTrue($result->isSuccess());
-        self::assertSame($success, $result);
-        self::assertSame('foobar', $result->get());
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function testSuccess(): void
-    {
-        self::assertInstanceOf(None::class, $this->failure->success());
+        self::assertSame($this->success, $result);
+        self::assertSame(self::MESSAGE, $result->get());
     }
 }
