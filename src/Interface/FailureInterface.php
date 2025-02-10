@@ -7,18 +7,18 @@ namespace Ghostwriter\Result\Interface;
 use Throwable;
 
 /**
- * @template TError of Throwable
+ * @template TResult of Throwable
  *
- * @extends ResultInterface<TError>
+ * @extends ResultInterface<TResult>
  */
 interface FailureInterface extends ResultInterface
 {
     /**
-     * @template TNewFailure of Throwable
+     * @template TFailure of Throwable
      *
-     * @param TNewFailure $throwable
+     * @param TFailure $throwable
      *
-     * @return self<TNewFailure>
+     * @return self<TFailure>
      */
     public static function new(Throwable $throwable): self;
 }
