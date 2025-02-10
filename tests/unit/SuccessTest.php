@@ -4,21 +4,18 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use Ghostwriter\Option\None;
-use Ghostwriter\Option\Some;
 use Ghostwriter\Result\Exception\ResultException;
 use Ghostwriter\Result\Failure;
 use Ghostwriter\Result\Interface\FailureInterface;
 use Ghostwriter\Result\Result;
 use Ghostwriter\Result\Success;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\UsesClass;
 use RuntimeException;
 use Throwable;
 
+#[CoversClass(Failure::class)]
+#[CoversClass(Result::class)]
 #[CoversClass(Success::class)]
-#[UsesClass(Failure::class)]
-#[UsesClass(Result::class)]
 final class SuccessTest extends AbstractTestCase
 {
     /**
@@ -27,10 +24,9 @@ final class SuccessTest extends AbstractTestCase
     public function testAnd(): void
     {
         $success = Success::new(true);
+
         self::assertSame($success, $this->success->and($success));
         self::assertTrue($success->isSuccess());
-        self::assertTrue($success->success()->isSome());
-        self::assertTrue($success->failure()->isNone());
         self::assertTrue($success->get());
     }
 
@@ -72,22 +68,10 @@ final class SuccessTest extends AbstractTestCase
     /**
      * @throws Throwable
      */
-    public function testError(): void
-    {
-        self::assertSame(42, $this->success->get());
-
-        self::assertTrue($this->success->isSuccess());
-
-        self::assertInstanceOf(None::class, $this->success->failure());
-    }
-
-    /**
-     * @throws Throwable
-     */
     public function testExpect(): void
     {
         $runtimeException = new RuntimeException('oops!');
-        self::assertSame(42, $this->success->expect($runtimeException));
+        self::assertSame(self::MESSAGE, $this->success->expect($runtimeException));
     }
 
     /**
@@ -97,6 +81,7 @@ final class SuccessTest extends AbstractTestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('oops!');
+
         $this->success->expectError(new RuntimeException('oops!'));
     }
 
@@ -105,7 +90,7 @@ final class SuccessTest extends AbstractTestCase
      */
     public function testGet(): void
     {
-        self::assertSame(42, $this->success->get());
+        self::assertSame(self::MESSAGE, $this->success->get());
     }
 
     /**
@@ -124,7 +109,7 @@ final class SuccessTest extends AbstractTestCase
      */
     public function testGetOr(): void
     {
-        self::assertSame(42, $this->success->getOr(false));
+        self::assertSame(self::MESSAGE, $this->success->getOr(false));
     }
 
     /**
@@ -133,13 +118,21 @@ final class SuccessTest extends AbstractTestCase
     public function testGetOrElse(): void
     {
         $fn = static fn (): bool => false;
-        self::assertSame(42, $this->success->getOrElse($fn));
+        self::assertSame(self::MESSAGE, $this->success->getOrElse($fn));
     }
 
     /**
      * @throws Throwable
      */
     public function testIsError(): void
+    {
+        self::assertFalse($this->success->isFailure());
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testIsFailure(): void
     {
         self::assertFalse($this->success->isFailure());
     }
@@ -158,13 +151,15 @@ final class SuccessTest extends AbstractTestCase
     public function testMap(): void
     {
         $result = $this->success->map(static fn (mixed $x): mixed => $x);
+
         self::assertTrue($result->isSuccess());
         self::assertNotSame($this->success, $result);
 
-        $mapped = $this->success->map(static fn (mixed $x): int => (int) $x * 10);
+        $mapped = $this->success->map(static fn (mixed $x): string => $x . self::MESSAGE);
+
         self::assertTrue($mapped->isSuccess());
         self::assertNotSame($this->success, $mapped);
-        self::assertSame(420, $mapped->get());
+        self::assertSame(self::MESSAGE . self::MESSAGE, $mapped->get());
     }
 
     /**
@@ -173,6 +168,7 @@ final class SuccessTest extends AbstractTestCase
     public function testMapError(): void
     {
         $result = $this->success->mapError(static fn (mixed $x): mixed => $x);
+
         self::assertTrue($result->isSuccess());
         self::assertSame($this->success, $result);
     }
@@ -186,7 +182,7 @@ final class SuccessTest extends AbstractTestCase
         $result = $this->success->or($success);
 
         self::assertTrue($result->isSuccess());
-        self::assertSame(42, $result->get());
+        self::assertSame(self::MESSAGE, $result->get());
     }
 
     /**
@@ -199,14 +195,6 @@ final class SuccessTest extends AbstractTestCase
         });
 
         self::assertTrue($result->isSuccess());
-        self::assertSame(42, $result->get());
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function testSuccess(): void
-    {
-        self::assertInstanceOf(Some::class, $this->success->success());
+        self::assertSame(self::MESSAGE, $result->get());
     }
 }

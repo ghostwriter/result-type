@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use Ghostwriter\Result\Failure;
 use Ghostwriter\Result\Interface\FailureInterface;
 use Ghostwriter\Result\Interface\SuccessInterface;
-use Ghostwriter\Result\Success;
+use Ghostwriter\Result\Result;
 use Override;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
@@ -33,8 +32,8 @@ abstract class AbstractTestCase extends TestCase
 
         $this->runtimeException = new RuntimeException(self::MESSAGE);
 
-        $this->failure = Failure::new($this->runtimeException);
+        $this->failure = Result::failure($this->runtimeException);
 
-        $this->success = Success::new(42);
+        $this->success = Result::success(self::MESSAGE);
     }
 }

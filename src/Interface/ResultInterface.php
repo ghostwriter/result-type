@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ghostwriter\Result\Interface;
 
-use Ghostwriter\Option\Interface\OptionInterface;
 use Throwable;
 
 /**
@@ -47,11 +46,6 @@ interface ResultInterface
      * @throws Throwable
      */
     public function expectError(Throwable $throwable): Throwable;
-
-    /**
-     * Converts from Result<TResult> to Option<TResult>.
-     */
-    public function failure(): OptionInterface;
 
     /**
      * Gets a result, yielding the content of a Success.
@@ -139,11 +133,4 @@ interface ResultInterface
      * @return self<TOrElse|TResult>
      */
     public function orElse(callable $function): self;
-
-    /**
-     * Converts from Result<TResult> to Option<TResult>.
-     *
-     * @return OptionInterface<TResult>
-     */
-    public function success(): OptionInterface;
 }

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Ghostwriter\Result\Interface;
 
 /**
- * @template TValue
+ * @template TResult
  *
- * @extends ResultInterface<TValue>
+ * @extends ResultInterface<TResult>
  */
 interface SuccessInterface extends ResultInterface
 {
