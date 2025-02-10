@@ -34,16 +34,16 @@ final readonly class Result
      * @template TValue
      *
      * @param callable(TValue):ResultInterface<TValue> $closure
-     * @param SomeInterface<TValue>                    $option
+     * @param SomeInterface<TValue>                    $some
      *
      * @throws Throwable
      *
      * @return ResultInterface<TValue>
      */
-    public static function call(callable $closure, SomeInterface $option): ResultInterface
+    public static function call(callable $closure, SomeInterface $some): ResultInterface
     {
         try {
-            return self::new($closure($option->get()));
+            return self::new($closure($some->get()));
         } catch (Throwable $throwable) {
             return self::failure($throwable);
         }
