@@ -13,8 +13,8 @@ use Throwable;
 
 use function str_repeat;
 
-#[CoversClass(Result::class)]
 #[CoversClass(Failure::class)]
+#[CoversClass(Result::class)]
 #[CoversClass(Success::class)]
 final class ResultTest extends AbstractTestCase
 {
