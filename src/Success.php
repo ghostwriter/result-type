@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Ghostwriter\Result;
 
-use Ghostwriter\Option\Interface\NoneInterface;
 use Ghostwriter\Option\Interface\SomeInterface;
-use Ghostwriter\Option\None;
 use Ghostwriter\Option\Some;
 use Ghostwriter\Result\Exception\ResultException;
 use Ghostwriter\Result\Interface\ResultInterface;
@@ -83,12 +81,6 @@ final readonly class Success implements SuccessInterface
     public function expectError(Throwable $throwable): Throwable
     {
         throw $throwable;
-    }
-
-    #[Override]
-    public function failure(): NoneInterface
-    {
-        return None::new();
     }
 
     /**
@@ -170,11 +162,5 @@ final readonly class Success implements SuccessInterface
     public function orElse(callable $function): self
     {
         return $this;
-    }
-
-    #[Override]
-    public function success(): SomeInterface
-    {
-        return $this->some;
     }
 }
