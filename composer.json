@@ -62,7 +62,6 @@
         "allow-plugins": {
             "ghostwriter/coding-standard": true
         },
-        "bump-after-update": true,
         "classmap-authoritative": false,
         "discard-changes": true,
         "optimize-autoloader": true,
